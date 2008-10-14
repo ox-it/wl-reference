@@ -530,13 +530,13 @@ page estate
 }
 
 #col1of2{
-	width: 50%;
+	width: 66%;
 	float: left;
 	margin: 0;
 }
 
 #col2of2{
-	width: 50%;
+	width: 33%;
 	float: right;
 }
 
