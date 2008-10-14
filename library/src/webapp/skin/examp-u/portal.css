@@ -424,13 +424,13 @@ so for example <div class="tabHolder workspace"> so that different site types ca
 }
 
 #col1of2{
-	width: 49%;
+	width: 66%;
 	float: left;
 	margin: 0;
 }
 
 #col2of2{
-	width: 50%;
+	width: 33%;
 	float: right;
 }
 
