@@ -449,17 +449,15 @@ function showNotif(item, button,formName)
 	}
 	if (item !="noNotif")
 	{
-		var browserType;
-		if (document.all) {browserType = "ie"}
-		if (window.navigator.userAgent.toLowerCase().match("gecko")) {browserType= "gecko"}
-		if (browserType == "gecko" )
-			document.showItem = eval('document.getElementById(item)');
-		else if (browserType == "ie")
+		// Doesn't getElementByID just work?
+		if (document.all) {
 			document.showItem = eval('document.all[item]');
-		else
+		} else if (document.layers) {
 			document.showItem = eval('document.layers[item]');
-
-			document.showItem.style.visibility = "visible";
+		} else {
+			document.showItem = eval('document.getElementById(item)');
+		}
+		document.showItem.style.visibility = "visible";
 	}
 	
 	for (var i=0;i<document.getElementsByTagName("input").length; i++) 
