@@ -90,7 +90,7 @@ FCKConfig.ToolbarSets["Default"] = [
         ['OrderedList','UnorderedList','Outdent','Indent'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','TextColor','BGColor'],
         ['Link','Unlink','Anchor'],
-        ['ResourceSearch','Image','Flash','Table','Rule','Smiley','SpecialChar'],['Style'],
+        ['ResourceSearch','Image','Flash','Table','Rule','Smiley','SpecialChar'],
         ['FontFormat','FontName','FontSize'],
         ['FitWindow']
 ] ;
