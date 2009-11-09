@@ -36,11 +36,6 @@ FCKConfig.BaseHref = '' ;
 
 FCKConfig.FullPage = false ;
 
-// Link: Target Windows
-FCKConfig.LinkShowTargets = true ;
-FCKConfig.LinkTargets = '_blank;_parent;_self;_top' ;
-FCKConfig.LinkDefaultTarget = '' ;
-
 // The following option determines whether the "Show Blocks" feature is enabled or not at startup.
 FCKConfig.StartupShowBlocks = false ;
 
