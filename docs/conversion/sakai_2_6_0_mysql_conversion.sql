@@ -639,7 +639,7 @@ INSERT INTO CITATION_SCHEMA (SCHEMA_ID, PROPERTY_NAME, PROPERTY_VALUE) VALUES('t
     create table ASN_MA_ITEM_T (
         ID bigint not null,
         ASSIGNMENT_ID varchar(255),
-        TEXT varchar(255),
+        TEXT text,
         SHOW_TO integer,
         primary key (ID)
     );
@@ -647,7 +647,7 @@ INSERT INTO CITATION_SCHEMA (SCHEMA_ID, PROPERTY_NAME, PROPERTY_VALUE) VALUES('t
     create table ASN_NOTE_ITEM_T (
         ID bigint not null auto_increment,
         ASSIGNMENT_ID varchar(255),
-        NOTE varchar(255),
+        NOTE text,
         CREATOR_ID varchar(255),
         SHARE_WITH integer,
         primary key (ID)
@@ -716,11 +716,17 @@ CREATE INDEX IE_SAKAI_EVENT_DELAY_RESOURCE ON SAKAI_EVENT_DELAY
 -- appear in the new mail archive. The script is in the source as mailarchive-runconversion.sh. Please see the SAK for more information on this script or SAK-16554 for
 -- updates to this script. 
 
-CREATE INDEX IE_MAILARC_SUBJECT ON MAILARCHIVE_MESSAGE
-(
-       SUBJECT                   ASC
-);
 ALTER TABLE MAILARCHIVE_MESSAGE ADD COLUMN (
        SUBJECT           VARCHAR (255) NULL,
        BODY              LONGTEXT NULL
 );
+
+-- SAK-16809 Index order wrong
+CREATE INDEX IE_MAILARC_SUBJECT ON MAILARCHIVE_MESSAGE
+(
+       SUBJECT                   ASC
+);
+
+-- SAK-11096 asn.share.drafts is a newly added permission
+
+INSERT INTO SAKAI_REALM_FUNCTION VALUES (DEFAULT, 'asn.share.drafts');

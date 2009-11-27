@@ -145,6 +145,7 @@ FCKConfig.ToolbarSets["small"] = [
         ['Bold','Italic','TextColor','BGColor','-','Outdent','Indent','JustifyLeft','JustifyCenter','JustifyRight','-','OrderedList','UnorderedList','-','Link','Unlink']
 ] ;
 
+
 FCKConfig.ToolbarSets["Attachments"] = [
    ['About'],
    ['Source','DocProps','Templates'],
