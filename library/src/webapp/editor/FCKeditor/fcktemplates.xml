@@ -25,15 +25,6 @@
  * See FCKConfig.TemplatesXmlPath in the configuration file.
 -->
 <Templates imagesBasePath="fck_template/images/">
-	<!-- Added ACM sep 08: http://jira.oucs.ox.ac.uk/jira/browse/WL-421  -->
-	<Template title="Use WebLearn Fonts" image="wl-styles.gif">
-		<Description>This template is only for use when creating an HTML page via the Resource tool. It will import the style sheets (CSS) used by the rest of WebLearn so that the page will look like all other pages in the system.</Description>
-		<Html>
-			<![CDATA[
-  <div><link media="all" rel="stylesheet" type="text/css" href="/local-skins/tool_base.css" /><link media="all" rel="stylesheet" type="text/css" href="/local-skins/weblearn-beta/tool.css" /></div><p>Type your text here.</p>
-                        ]]>
-		</Html>
-	</Template>
 	<Template title="Image and Title" image="template1.gif">
 		<Description>One main image with a title and text that surround the image.</Description>
 		<Html>
