@@ -20,7 +20,7 @@
     <profile>
       <id>without-jsmath</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <dependencies>
         <dependency>
@@ -49,7 +49,7 @@
     <profile>
       <id>with-jsmath</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>sakai.withjsmath</name>
           <value>true</value>
