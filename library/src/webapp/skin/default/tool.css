@@ -1166,3 +1166,9 @@ ul.makeMenu li.menuClose a:hover {
 .menuOpen{
 	cursor:pointer;
 }
+
+.siteListSoftlyDeleted {
+	filter: alpha(opacity=50);
+	opacity : 0.5;
+    -moz-opacity: 0.50;
+}
