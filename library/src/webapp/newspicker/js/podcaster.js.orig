@@ -1,0 +1,344 @@
+/**
+ * Implements RSS Podcast chunked parsing and provides dynamic loading for 
+ * a content container. Also loads the template for displaying podcasts.
+ *
+ * TODO
+ *  - Optimize scroll condition
+ */
+ 
+/* array.filter fix */
+if (!Array.prototype.filter){Array.prototype.filter=function(fun){var len=this.length;if(typeof fun!="function") throw new TypeError();var res = new Array();
+    var thisp = arguments[1];for (var i=0;i<len;i++){if (i in this){var val = this[i];if (fun.call(thisp,val,i,this)) res.push(val);}}return res;};}
+
+// closure encapsulation
+(function() {
+    
+/* Timer */
+function getTime() {
+    return new Date().getTime();
+}
+
+/* Log */
+function console_log() {
+    //console.log.apply(console, console_log.arguments);
+}
+
+
+/* Initializations */
+TEMPLATE_FILE = "podcast.thtml";
+RSS_FILE = "podcasts.xml";
+CHUNK_LOAD_COUNT = 8;
+HIGHLIGHT_REPLACE = '<em>$1</em>';
+
+// initialized when XML file returned
+THUMBNAIL_XPATH = null;
+CATEGORY_XPATH = null;
+
+/* Flags */
+_Ready_ = {
+    Template: false,
+    Data: false,
+    Init: false
+};
+_LoadNext_ = false; // used as request to load next chunk. Set to true by scroll condition if mouse is down
+_MouseDown_ = false; // used to check if scrolling is done by mouse
+
+/* Globals (initialize all to null) */
+DisplayContainer = null;
+ScrollContainer = null;
+LoadingElement = null;
+
+PodcastDataRoot = null;         // podcast data xml root node
+PodcastData = null;             // all podcast data
+CurrentPodcastData = null;      // currently used podcast data set
+Highlight_Re = null;            // highlighter regexp
+Search_Re = null;               // search regexp
+Type_Filter = '';               // type filter
+Sort_Field = 'title';           // sort field
+Sort_Asc = true;                // sort order
+Div_Filter = '';                // division filter
+
+
+/* Global Functions */
+function bootLoader(flag) {
+    // attempts to start the main script, but only if all the flags in _Ready_ are true
+    // if a flag is passed, that flag is set to true before attempting bootload
+    if (typeof(flag) != 'undefined') _Ready_[flag] = true;
+    f = true;
+    $.each(_Ready_, function(k, v) {
+        return f = v;
+    });
+    if (f) main();    
+}
+
+/* Returns a full dataset, sorted according to given criteria */
+_sortFunctions = {
+    'titleA': function(a,b) { return a.title.localeCompare(b.title); },
+    'titleD': function(a,b) { return b.title.localeCompare(a.title); }
+};
+_getSortedDataCache = {};
+function getSortedData(field, asc) {
+    key = field + (asc ? "A" : "D");
+    if (!_getSortedDataCache.hasOwnProperty(key)) {
+        DataCopy = PodcastData.slice(0);
+        DataCopy.sort(_sortFunctions[key]);
+        _getSortedDataCache[key] = DataCopy;
+    }
+    return _getSortedDataCache[key];
+}
+// updates current data set according to Sort_Field and Sort_Asc
+function updateSortData() {
+    CurrentPodcastData = getSortedData(Sort_Field, Sort_Asc);
+}
+
+
+// loads 'count' podcasts matching the filter
+var chunkLoadPodcasts = (function() {
+    _chunkDataSet = null;  // current data set
+    _filter_fn = function(data) {
+        return (!Search_Re || (data.title.match(Search_Re) || data.description.match(Search_Re))) &&
+               (!Type_Filter || (data.type == Type_Filter)) &&
+               (!Div_Filter || (data.division == Div_Filter))
+    }
+    return function(restart) {
+        st = getTime();
+        count = CHUNK_LOAD_COUNT;
+        if (restart) _chunkDataSet = CurrentPodcastData.filter(_filter_fn);
+        while (_chunkDataSet.length > 0 && count > 0) {
+            data = _chunkDataSet.shift();
+            data.fullRead();
+            DisplayContainer.trigger('appendPodcast', [data]);
+            count--;
+        }
+        
+        LoadingElement.hide();
+        console_log("Took: ", getTime() - st,"ms");
+    }
+})();
+   
+    
+// full read function, reads in data for display
+function _nullFunc() {};
+function _fullRead() {
+    itemEl = this.el;    
+    thumbNode = itemEl.find(THUMBNAIL_XPATH);
+    // this.updated = itemEl.find('[nodeName=atom:updated]').text(),
+    this.thumbnail_url = thumbNode.attr('url');
+    this.division_label = itemEl.find(CATEGORY_XPATH).attr('label');
+    this.fullRead = _nullFunc;  // replace fullRead with an empty func
+}
+// partial read function, reads in data for filtering/search
+function _partialRead() {
+    itemEl = this.el;
+    
+    type = itemEl.find('guid').text().match(/(-)([A-z]*)$/)[2];
+    if (type == 'podcasts') type = 'audio';
+    this.type = type;
+    
+    this.division = itemEl.find(CATEGORY_XPATH).attr('term');
+    this.description = itemEl.find('description').text();
+    this.partialRead = _nullFunc;
+}
+// pre-reads data necessary for initial sorting, from the <item> node
+// to partially read in data for filtering, invoke partialRead
+// to fully read in data for display, invoke fullRead
+function preloadPodcastData(itemEl, i) {
+    return {
+        index: i,           // item index, usually passed by the parent loop structure (seems useless)
+        title: itemEl.find('title').text(),
+        el: itemEl,
+        fullRead: _fullRead,
+        partialRead: _partialRead
+    };
+}
+// reads all important podcast data from a preread podcast data
+
+// handles the selection process
+function handleSelect(podcast, el) {
+    alert(podcast.el.find('link').text());
+}
+
+/* Domready script */
+$(window).ready(function() {
+    /* 1. Workspace setup */
+    DisplayContainer = $(".podcastContainer");   // where podcasts are displayed
+    ScrollContainer = $(".podcastViewport");    // where the scroll event is to be intercepted
+    LoadingElement = $('#loading'); // loading notification element
+    
+    /* 2. Template preparation */
+    // load an instance of the podcast display template
+    var Template;
+    $.get(TEMPLATE_FILE, function(data, st, xhr) {
+        Template = $(data);
+        bootLoader('Template');
+    });
+    $('body').append($(document.createElement('div')).attr('id', '_PodcastDisplayTemplate').append(Template).hide());
+    
+    /* 3. Functions */
+    // visualizes a podcast and appends it at the end of the display container
+    DisplayContainer.bind('appendPodcast', function(e, podcast) {
+        // clone the template
+        podcastEl = Template.clone();
+        
+        title = Highlight_Re ? podcast.title.replace(Highlight_Re, HIGHLIGHT_REPLACE) : podcast.title;
+        description = Highlight_Re ? podcast.description.replace(Highlight_Re, HIGHLIGHT_REPLACE) : podcast.description;
+        
+        
+        // fill it
+        podcastEl
+            .find('.header').html(title).end()
+            .find('.description').html(description).end()
+            .find('.type').text(podcast.type).end()
+            .find('.thumbnail').attr('src', podcast.thumbnail_url).end()
+        ;
+        
+        // add data
+        podcastEl.data('data', podcast);
+        
+        // UI it
+        // podcastEl.find('button').button();
+        
+        // append it
+        $(this).append(podcastEl);
+    });
+    
+    // reload content, trigger this event whenever content criterion has been changed
+    DisplayContainer.bind('update', function(e) {
+        ScrollContainer.scrollTop(0);
+        $(this).empty();
+        chunkLoadPodcasts(true);
+    });
+
+    /* 4. Grab the RSS file and pre-process it */
+    $.ajax({
+        url: RSS_FILE, 
+        success: function(data) {
+            st = getTime();
+            PodcastDataRoot = $(data);  // store xml - DO NOT REMOVE OR SAFARI COMPLAINS
+            
+            // test xpath selection capabilites
+            xpath_backslash = ($(data).find('item:first').find('atom\\:updated').length > 0);
+            THUMBNAIL_XPATH = xpath_backslash ? 'media\\:thumbnail' : '[nodeName=media:thumbnail]';
+            CATEGORY_XPATH = xpath_backslash ? 'atom\\:category:first' : '[nodeName=atom:category]:first';
+            
+            // preprocess the data - extract information that will used
+            // in top-level handling
+            PodcastData = [];
+            $(data).find('item').each(function(i) {
+                data = preloadPodcastData($(this), i);
+                data.partialRead();
+                PodcastData.push(data);
+            });
+            
+            // update sorted cache
+            _getSortedDataCache['dateD'] = PodcastData;
+            DataCopy = PodcastData.slice(0);
+            DataCopy.reverse();
+            _getSortedDataCache['dateA'] = DataCopy;
+                       
+            CurrentPodcastData = getSortedData('title', true);
+            
+            console_log("Preprocessing: ", getTime() - st,"ms");
+            bootLoader('Data');
+        }
+    });
+    
+    /* 5. Set up global Select handler */
+    $('.podcast .controls button').live('click', function(e) {
+        podcastEl = $(this).closest('.podcast');
+        podcast = podcastEl.data('data');
+        handleSelect(podcast, podcastEl);
+    });
+    
+    /* 6. Rig up search */
+    function searchFunction(e) {        
+        term = $('#podcast_search_box').val();
+        if (term.length > 0) {       
+            // detect case sensitivity and set regexp flag
+            cs_fl = ($('#podcast_search_cs').is(':checked')) ? '' : 'i';
+            // set up Search_Re and Highlight_Re
+            Search_Re = RegExp(term.replace(/ +/g, ".*"), cs_fl);    // replace series of spaces as anything in between
+            Highlight_Re = RegExp('(' + term.replace(/ +/g, "|") + ')', "g" + cs_fl);
+        } else {
+            Search_Re = null;
+            Highlight_Re = null;
+        }        
+        DisplayContainer.trigger('update');
+    }
+    
+    deferredSearchFn = $.defer(450, 'deferredSearchTimer', searchFunction);
+    immediateSearchFn = $.defer(1, 'deferredSearchTimer', searchFunction);
+    $('#podcast_search_box').bind('deferred keyup', function(e) {
+        if ((e.keyCode || e.which) == 13) {
+            immediateSearchFn(e);
+        } else {
+            deferredSearchFn(e);
+        }
+    });
+    $('#podcast_search_box').bind('search', searchFunction);
+    $('#podcast_search_cs').bind('click', searchFunction);  // rig case-sensitivity button
+    
+    /* 7. Rig up Filter */
+    $('#podcast_type_filter_all').attr('checked', true);
+    $('#podcast_type_filter_box').buttonset();
+    $('#podcast_type_filter_box input').live('click', function(e) {
+        Type_Filter = $('#podcast_type_filter_box input:checked').val();
+        DisplayContainer.trigger('update');
+    });
+    // set default filter
+    
+    /* 8. Rig up sort */
+    $('#podcast_sort_box').buttonset();
+    $('#podcast_sort_box button').click(function(e) {
+        newField = $(this).attr('id').match(/(-)([a-z]*)$/)[2];
+        if (newField == Sort_Field) {
+            // toggle direction
+            Sort_Asc = !Sort_Asc;
+        } else {
+            Sort_Asc = true;
+            Sort_Field = newField;
+        }
+        $(this).siblings().button('option', 'icons', { secondary: false});
+        $(this).button('option', 'icons', { secondary: Sort_Asc ? "ui-icon-triangle-1-n" : "ui-icon-triangle-1-s"});
+        updateSortData();
+        DisplayContainer.trigger('update');
+    });
+    
+    /* 9. Division Filtering */
+    $('#podcast_division_filter').val('');
+    $('#podcast_division_filter').change(function(e) {
+        Div_Filter = $(this).val();
+        DisplayContainer.trigger('update');
+    });
+    bootLoader('Init');    
+});
+
+/* Main Script starts here */
+function main() {  
+    $('#podcast_search_box').trigger('search');
+    
+    // rig up scroll event
+    ScrollContainer.scroll(function(e) {
+        // scroll condition
+        if (ScrollContainer.scrollTop() >= DisplayContainer.height() - ScrollContainer.height()) {
+            // allow on-mouse-up loading - strangely, this only works on firefox
+            if ($.browser.mozilla && _MouseDown_) {
+                _LoadNext_ = true;
+                LoadingElement.show();
+            } else chunkLoadPodcasts();
+        }
+    });
+    
+    ScrollContainer.mousedown(function(e) {
+        _MouseDown_ = true;
+    });
+    
+    ScrollContainer.mouseup(function(e) {
+        if (_LoadNext_) chunkLoadPodcasts();
+        _LoadNext_ = false;
+        _MouseDown_ = false;
+    });
+}
+
+// closure encapsulation end
+})();
