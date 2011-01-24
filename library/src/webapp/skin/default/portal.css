@@ -1130,12 +1130,3 @@ div#privacy_overlay {
 	opacity: 0.7;
    z-index: 0;
 }
-
-#siteStatusSoftlyDeleted {
-	border: 1px solid #ffcc33;
-	padding: 4px 25px;
-	background-repeat: no-repeat !important;
-	background-position: 5px 5px !important;
-	background-color: #fff9e6;
-	background-image: url('/library/image/silk/error.png');
-}
