@@ -8,7 +8,7 @@ $(function() {
 		// Need to escape the dot in the ID.
 		var titleId = "#"+ urlInput.id.replace(/channel-url/, "title").replace(/\./, "\\.");
 		var titleInput = $(titleId).get(0);
-		var button = $("<input type='button' class='find-podcast' value='Find Podcast'>");
+		var button = $("<input type='button' class='find-podcast' value='Browse Oxford Podcast Collection'>");
 		button.data("titleElm", titleInput);
 		button.data("urlElm", urlInput);
 		$(this).after(button);
