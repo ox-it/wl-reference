@@ -47,8 +47,10 @@
 				<li><a href="#account">Setting up your WebLearn WebDAV account</a></li>
 				<li><a href="#win">Setting up WebDAV for Windows XP</a></li>
 				<li><a href="#vista">Setting up WebDAV for Windows Vista</a></li>
+				<li><a href="#win7">Setting up WebDAV for Windows 7</a></li>
 				<li><a href="#osx">Setting up WebDAV for Mac (OS 10.0 - 10.3)</a></li>
-				<li><a href="#osxx">Setting up WebDAV for Mac (OS 10.4)</a></li>
+				<li><a href="#osxx">Setting up WebDAV for Mac (OS 10.4 and 10.6)</a></li>
+				<li><a href="#osx5">Setting up WebDAV for Mac (OS 10.5)</a></li>
 				<li><a href="#linux">Setting up WebDAV for Linux (Ubuntu 10.10)</a></li>
 			</ul>
 
@@ -163,6 +165,32 @@ base at <span class="example"><a href="http://support.microsoft.com/" target="_b
 
 			<li>You can now drag files and folders to and from your computer and the site Resources folder.</li>
 			</ol>
+			
+			<a name="win7"></a>
+			<h4>Setting up WebDAV for Windows 7</h4>
+			<p>
+				The Webclient service must be turned on in Windows 7 in order to successfully create a WebDAV connection.
+			</p>
+
+			<h5>To enable the Webclient service in Windows 7:</h5>
+			<ol>
+			<li>From the Start menu on your desktop, go to <strong>Control Panel > System and Security > Administrative Tools > Services.</strong></li>
+			<li>Locate and set the Webclient service to <strong>Automatic</strong>, then click <strong>Apply</strong>.</li>
+			<li>If the service is not already running, click <strong>Start</strong>. </li>
+			<li>Click <strong>OK</strong> to close the Control Panel.</li>
+			</ol>
+			
+			<h5>To create a WebDAV connection on Windows 7 :</h5>
+			<ol>
+			<li>Right-click on the <strong>Computer</strong> icon on your desktop.</li>
+			<li>Select the option to <strong>Map Network Drive</strong>.</li>
+			<li>Paste the <strong>WebDAV URL</strong> that points to the destination Resources tool and click <strong>Finish</strong>.</li>
+			<li>A new Network location will appear. <strong>Double-click</strong> the item to open it. </li>
+			<li>When prompted, enter your <strong>Network ID username and passphrase</strong> (your usual WebLearn username and password).</li>
+			<li>The window to your site Resources will appear and is accessible later from the Computer menu. </li>
+			<li>You may drag and drop folders between your computer and the sites to which you just connected. To delete an item, right-click it and select <strong>Delete</strong>.</li>
+			</ol>
+			
 
 			<a name="osx"></a>
 			<h4>Setting up WebDAV for Mac (OS 10.0 - 10.3)</h4>
@@ -203,9 +231,11 @@ base at <span class="example"><a href="http://support.microsoft.com/" target="_b
 					drag and drop files into this window or use the "Web" menu to upload and download files.
 				</li>
 			</ol>
+			
+			
 
 			<a name="osxx"></a>
-			<h4>Setting up WebDAV for Mac (OS 10.4 - 10.5)</h4>
+			<h4>Setting up WebDAV for Mac (OS 10.4 and 10.6)</h4>
 			<p>
 				Note: There must be at least one object (file, folder etc.) in the course or project resource area before you begin
 				the setup procedure. This procedure needs to be done once for each site before you can use WebDAV to transfer
@@ -222,6 +252,25 @@ base at <span class="example"><a href="http://support.microsoft.com/" target="_b
 				<li>
 					You will now see a window on your Macintosh screen that represents the resources in your site.
 					You can now drag and drop files into this window and delete files by dragging them to the Trash.
+				</li>
+			</ol>
+			
+			<a name="osx5"></a>
+			<h4>Setting up WebDAV for Mac (OS 10.5)</h4>
+			<p>
+				Note: There must be at least one object (file, folder etc.) in the course or project resource area before you begin
+				the setup procedure. This procedure needs to be done once for each site before you can use WebDAV to transfer
+				files to and from any one site.
+			</p>
+			<ol>
+
+				<li><strong>Download and install</strong> the Cyberduck WebDAV client to create WebDAV connections to Weblearn sites on a Mac running OS 10.x. </li>
+				<li>Launch Cyberduck and paste the site <strong>WebDAV URL</strong> into the Quick Connect field and press <strong>Return (Enter)</strong>.</li>
+				<li>If prompted, choose <strong>WebDAV (HTTPS)</strong> as the protocol to use.</li>
+				<li>Type in your <strong>username and password</strong> and click <strong>Login</strong></li>
+				<li>
+					Your site Resources will display in the Cyberduck window.
+					You can now <strong>drag and drop</strong> files into this window and delete files by dragging them to the Trash.
 				</li>
 			</ol>
 			
