@@ -4,16 +4,16 @@ jQuery(document).ready(function () {
 	// Assumes that the page calling this file is in a directory also containing the juice folder
 	// Can be moved to whereever you want, just correct the paths
 	juice.setDebug(false);
-	juice.loadJs("./juice/metadefs/sakaich_metadef.js");
-	juice.loadJs("./juice/extensions/extendedbyJuice.js");	
-	juice.loadJs("./juice/extensions/daiaAvailability.js");
-	juice.loadCss("./juice/panels/juiceDefault.css");	
+	juice.loadJs("/library/juice/metadefs/sakaich_metadef.js");
+	juice.loadJs("/library/juice/extensions/extendedbyJuice.js");	
+	juice.loadJs("/library/juice/extensions/daiaAvailability.js");
+	juice.loadCss("/libraryvf ../ref	/juice/panels/juiceDefault.css");	
 	juice.onAllLoaded(runExtensions);
 });
 
 function runExtensions(){
-	var expandIcon = "https://weblearn.ox.ac.uk/library/image/sakai/expand.gif?panel=Main";
-	var collapseIcon = "https://weblearn.ox.ac.uk/library/image/sakai/collapse.gif?panel=Main";
+	var expandIcon = "/library/image/sakai/expand.gif?panel=Main";
+	var collapseIcon = "/library/image/sakai/collapse.gif?panel=Main";
 	sakaich_metadef();
 	if(juice.hasMeta()){
 		if(juice.hasMeta("primo_ids")){
@@ -22,7 +22,7 @@ function runExtensions(){
 			// Get Print Availability
 			// ****************
 			
-			var availServer = "http://cod.oucs.ox.ac.uk:40080/library-availability/library"; // DAIA server for print availability
+			var availServer = "/library-availability/library"; // DAIA server for print availability
 			var availabilityDiv = '<div id="availability"></div>';
 			var insert_avail = new JuiceInsert(availabilityDiv,"span.Z3988","after");
 			
@@ -62,7 +62,7 @@ function runExtensions(){
 			};
 			juice.setMeta("openurls",openurls);
 
-			var eavailServer = "http://cod.oucs.ox.ac.uk:40080/library-availability/eias"; // DAIA server for electronic availability
+			var eavailServer = "/library-availability/eias"; // DAIA server for electronic availability
 			var eavailabilityDiv = '<div id="e-availability"></div>';
 			var insert_eavail = new JuiceInsert(eavailabilityDiv,"span.Z3988","after");
 			
