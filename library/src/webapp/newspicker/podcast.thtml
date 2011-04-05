@@ -5,7 +5,7 @@
         Last updated: <b><span class="updated"></span></b> &bull; 
         <b><span class="division"></span></b>, <span class="faculty"></span>
     </div>
-    <img class="thumbnail" />
+    <img class="thumbnail" width="80" height="80"/>
     <span class="genericPlaceHolder"></span>
     <div class="highlightable description"></div>
     <div class="CLEAR"></div>

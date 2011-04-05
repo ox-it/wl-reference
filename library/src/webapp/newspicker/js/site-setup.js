@@ -61,7 +61,7 @@ $(function() {
 	PodcastPickerInit({
 		rssFile: sourceUrl,
 		triggerElements: $(buttons), // Array of elements that can be triggers.
-		genericThumbnails: true, // use generic thumbnails instead of those specified in the file
+		genericThumbnails: false, // use generic thumbnails instead of those specified in the file
 		// selection callback, podcast contains the podcast data, $(this) refers to the input that originally opened the picker
 		onSelect: function(podcast) {
 			// this points to the element that originally triggered the podcast picker

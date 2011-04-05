@@ -251,7 +251,7 @@ function PodcastPickerInit(o) {
                     ;
                     
                 } else {
-                	podcastEL.find('.thumbnail').attr('src', podcast.thumbnail_url).end()
+                	podcastEl.find('.thumbnail').attr('src', podcast.thumbnail_url).end()
                 }
                 
                 // add data
