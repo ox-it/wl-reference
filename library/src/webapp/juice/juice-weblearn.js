@@ -1,5 +1,3 @@
-jQuery.noConflict();
-
 jQuery(document).ready(function () {
 	// Assumes that the page calling this file is in a directory also containing the juice folder
 	// Can be moved to whereever you want, just correct the paths
