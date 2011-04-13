@@ -7,7 +7,7 @@ jQuery(document).ready(function () {
 	juice.loadJs("/library/juice/metadefs/sakaich_metadef.js");
 	juice.loadJs("/library/juice/extensions/extendedbyJuice.js");	
 	juice.loadJs("/library/juice/extensions/daiaAvailability.js");
-	juice.loadCss("/libraryvf ../ref	/juice/panels/juiceDefault.css");	
+	juice.loadCss("/library/juice/panels/juiceDefault.css");	
 	juice.onAllLoaded(runExtensions);
 });
 
