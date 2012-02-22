@@ -25,12 +25,16 @@ sakai.editor.editors = sakai.editor.editors || {};
 
 
 sakai.editor.editors.fckeditor = {};
-sakai.editor.editors.fckeditor.launch = function(targetId, config) {
+sakai.editor.editors.fckeditor.launch = function(targetId, config, width, height, buttonSet) {
     var oFCKeditor = new FCKeditor(targetId);
     oFCKeditor.BasePath = "/library/editor/FCKeditor/";
-    oFCKeditor.Width  = "675" ;
-    oFCKeditor.Height = "275" ;
-
+    //oFCKeditor.Width  = "675" ;
+    //oFCKeditor.Height = "275" ;
+    //oFCKeditor.ToolbarSet = "Minimal";
+    oFCKeditor.Width  = width;
+    oFCKeditor.Height = height;
+    oFCKeditor.ToolbarSet = buttonSet;
+    
     var folder = "";
     if (sakai.editor.collectionId) {
         folder = '&CurrentFolder=' + sakai.editor.collectionId;
