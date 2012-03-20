@@ -1102,3 +1102,6 @@ span.nil a{
     visibility: visible\9;
     visibility: visible\10;
 }
+
+span.indent { letter-spacing:1em }
+
