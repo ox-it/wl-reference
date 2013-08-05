@@ -58,6 +58,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config) {
         // menu. In some cases (Firefox and Safari, at least), this supplies corrections, suggestions, etc.
         disableNativeSpellChecker: false,
         browserContextMenuOnCtrl: true,
+        // WL-2917 This is to prevent CKEditor wrapping <link/> tags in <p> tags, although it's not valid HTML
+        // lots of places put <link/> tags to style their HTML fragments and under FCKEditor it worked fine.
+        // A better way to fix it would be to allow resources to create full HTML pages.
+        autoParagraph: false,
 
         toolbar_Full:
         [
