@@ -634,3 +634,37 @@ function browserSafeDocHeight() {
 	}
 	return Math.max(winHeight,docHeight); 
 }
+
+// Change http:// links to open in a new window when inside a frame
+function insecureLinksOpenInNewWindow() {
+
+    frame = document.getElementsByClassName('portletMainIframe').item(0);
+    var links;
+
+    if (frame) {
+        if (frame.contentDocument) {
+            // Firefox
+            links = frame.contentDocument.getElementsByTagName('a');
+        } else if (frame.contentWindow) {
+            // IE
+            links = frame.contentWindow.document.getElementsByTagName('a');
+        }
+
+        for(i in links) {
+            if(links[i].href.match(/^http:/)) {
+                links[i].target = '_blank';
+            }
+        }
+    }
+}
+
+// Different case for IE8
+function addEvent(element, event, fn) {
+    if (element.addEventListener)
+        element.addEventListener(event, fn, false);
+    else if (element.attachEvent)
+        element.attachEvent('on' + event, fn);
+}
+
+// TODO the event is attached to the top level window loading and so doesn't get triggered when the iframe changes content.
+addEvent(window, 'load', function(){insecureLinksOpenInNewWindow()})
