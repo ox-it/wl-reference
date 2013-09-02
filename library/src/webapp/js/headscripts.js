@@ -635,36 +635,29 @@ function browserSafeDocHeight() {
 	return Math.max(winHeight,docHeight); 
 }
 
-// Change http:// links to open in a new window when inside a frame
-function insecureLinksOpenInNewWindow() {
+// In the absence of jQuery, add an event listener
+function addEvent(element, event, fn) {
+    if (element.addEventListener) {
+        element.addEventListener(event, fn, false);
+    } else if (element.attachEvent) {
+        // IE 8
+        element.attachEvent('on' + event, fn);
+    }
+}
 
-    frame = document.getElementsByClassName('portletMainIframe').item(0);
-    var links;
+// Fix for mixed content blocked in Firefox and IE
+// This event is added to every page; we could be more selective about where it is included.
+addEvent(window, 'load', function(event){
+    if (window.top != window.self) {
+        // I am in an iframe
 
-    if (frame) {
-        if (frame.contentDocument) {
-            // Firefox
-            links = frame.contentDocument.getElementsByTagName('a');
-        } else if (frame.contentWindow) {
-            // IE
-            links = frame.contentWindow.document.getElementsByTagName('a');
-        }
+        links = window.self.document.getElementsByTagName('a');
 
-        for(i in links) {
+        for(var i = 0; i < links.length; ++i) {
             if(links[i].href.match(/^http:/)) {
                 links[i].target = '_blank';
             }
         }
     }
-}
+});
 
-// Different case for IE8
-function addEvent(element, event, fn) {
-    if (element.addEventListener)
-        element.addEventListener(event, fn, false);
-    else if (element.attachEvent)
-        element.attachEvent('on' + event, fn);
-}
-
-// TODO the event is attached to the top level window loading and so doesn't get triggered when the iframe changes content.
-addEvent(window, 'load', function(){insecureLinksOpenInNewWindow()})
