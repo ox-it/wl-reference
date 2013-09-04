@@ -647,17 +647,26 @@ function addEvent(element, event, fn) {
 
 // Fix for mixed content blocked in Firefox and IE
 // This event is added to every page; we could be more selective about where it is included.
-addEvent(window, 'load', function(event){
-    if (window.top != window.self) {
-        // I am in an iframe
+function forceLinksInNewWindow() {
+    addEvent(window, 'load', function(event){
+        if (window.top != window.self) {
+            // I am in an iframe
 
-        links = window.self.document.getElementsByTagName('a');
+            links = window.self.document.getElementsByTagName('a');
 
-        for(var i = 0; i < links.length; ++i) {
-            if(links[i].href.match(/^http:/)) {
-                links[i].target = '_blank';
+            for(var i = 0; i < links.length; ++i) {
+
+                link = links[i]
+
+                if(link.href.match(/^http:/)) {
+                    if(link.target == '' || link.target.match(/_self|_parent/)) {
+                        link.target = '_blank';
+                    }
+                }
             }
         }
-    }
-});
+    });
+}
+
+
 
