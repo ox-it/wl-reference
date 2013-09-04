@@ -660,7 +660,7 @@ function forceLinksInNewWindow() {
 
                 rewriteWebLearnHref(link);
 
-                if(link.href.match(/^http:/)) {
+                if(link.href && link.href.match(/^http:/)) {
                     if(link.target == '' || link.target.match(/_self|_parent/)) {
                         link.target = '_blank';
                     }
