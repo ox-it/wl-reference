@@ -673,8 +673,10 @@ function forceLinksInNewWindow() {
 // rewrites old weblearn links to the new address, called from forceLinksInNewWindow(),
 // this could have its own entry in sakai.properties.
 function rewriteWebLearnHref(link) {
-    if(link.href.match("^http://weblearn.ox.ac.uk|^http://beta.weblearn.ox.ac.uk")) {
-        link.href = link.href.replace("http://weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
-        link.href = link.href.replace("http://beta.weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+    if(link.href) {
+        if(link.href.match("^http://weblearn.ox.ac.uk|^http://beta.weblearn.ox.ac.uk")) {
+            link.href = link.href.replace("http://weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+            link.href = link.href.replace("http://beta.weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+        }
     }
 }
