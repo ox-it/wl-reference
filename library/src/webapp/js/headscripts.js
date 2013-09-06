@@ -645,32 +645,27 @@ function addEvent(element, event, fn) {
     }
 }
 
+// Fixes links / references to insecure content once the window loads
+function fixMixedContentOnLoad() {
+    addEvent(window, 'load', fixMixedContent);
+}
+
 // Fix for mixed content blocked in Firefox and IE
-// This event is added to every page; we could be more selective about where it is included.
-function forceLinksInNewWindow() {
-    addEvent(window, 'load', function(event){
+function fixMixedContentReferences() {
+    rewriteYouTubeEmbeds();
+    if (window.top != window.self) {
+        // I am in an iframe
+        fixLinksForMixedContent();
+    }
+}
 
-        rewriteYouTubeEmbeds();
+function fixLinksForMixedContent() {
+    var links = window.self.document.getElementsByTagName('a');
 
-        if (window.top != window.self) {
-            // I am in an iframe
-
-            var links = window.self.document.getElementsByTagName('a');
-
-            for(var i = 0; i < links.length; ++i) {
-
-                var link = links[i]
-
-                rewriteWebLearnHref(link);
-
-                if(link.href && link.href.match(/^http:/)) {
-                    if(link.target == '' || link.target.match(/_self|_parent/)) {
-                        link.target = '_blank';
-                    }
-                }
-            }
-        }
-    });
+    for(var i = 0; i < links.length; ++i) {
+        rewriteWebLearnHref(links[i]);
+        addTargetBlank(links[i]);
+    }
 }
 
 // rewrites old weblearn links to the new address, called from forceLinksInNewWindow(),
@@ -680,6 +675,15 @@ function rewriteWebLearnHref(link) {
         if(link.href.match("^http://weblearn.ox.ac.uk|^http://beta.weblearn.ox.ac.uk")) {
             link.href = link.href.replace("http://weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
             link.href = link.href.replace("http://beta.weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+        }
+    }
+}
+
+// Sets the target property to '_blank' so that insecure content is opened in a new window
+function addTargetBlank(link) {
+    if(link.href && link.href.match(/^http:/)) {
+        if(link.target == '' || link.target.match(/_self|_parent/)) {
+            link.target = '_blank';
         }
     }
 }
@@ -703,4 +707,9 @@ function rewriteYouTubeEmbeds() {
         }
     }
 
+}
+
+// the function to call when oxitems has finished loading
+function oxitemsCallback() {
+    fixLinksForMixedContent();
 }
