@@ -649,6 +649,9 @@ function addEvent(element, event, fn) {
 // This event is added to every page; we could be more selective about where it is included.
 function forceLinksInNewWindow() {
     addEvent(window, 'load', function(event){
+
+        rewriteYouTubeEmbeds(window.self.document);
+
         if (window.top != window.self) {
             // I am in an iframe
 
@@ -679,4 +682,25 @@ function rewriteWebLearnHref(link) {
             link.href = link.href.replace("http://beta.weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
         }
     }
+}
+
+// rewrites embedded youtube content to be protocol agnostic, called from forceLinksInNewWindow(),
+// this could have its own entry in sakai.properties.
+function rewriteYouTubeEmbeds(doc) {
+    embeds = doc.getElementsByTagName('embed');
+    for(var i = 0; i < embeds.length; ++i) {
+        embed = embeds[i]
+        if(embed.src && embed.src.match("^http://youtube.com|^http://www.youtube.com")) {
+            embed.src = embed.src.replace('http://', '//');
+        }
+    }
+
+    iframes = doc.getElementsByTagName('iframe');
+    for(var i = 0; i < iframes.length; ++i) {
+        iframe = iframes[i]
+        if(iframe.src && iframe.src.match("^http://youtube.com|^http://www.youtube.com")) {
+            iframe.src = iframe.src.replace('http://', '//');
+        }
+    }
+
 }
