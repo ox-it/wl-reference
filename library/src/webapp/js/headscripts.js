@@ -650,16 +650,16 @@ function addEvent(element, event, fn) {
 function forceLinksInNewWindow() {
     addEvent(window, 'load', function(event){
 
-        rewriteYouTubeEmbeds(window.self.document);
+        rewriteYouTubeEmbeds();
 
         if (window.top != window.self) {
             // I am in an iframe
 
-            links = window.self.document.getElementsByTagName('a');
+            var links = window.self.document.getElementsByTagName('a');
 
             for(var i = 0; i < links.length; ++i) {
 
-                link = links[i]
+                var link = links[i]
 
                 rewriteWebLearnHref(link);
 
@@ -686,18 +686,18 @@ function rewriteWebLearnHref(link) {
 
 // rewrites embedded youtube content to be protocol agnostic, called from forceLinksInNewWindow(),
 // this could have its own entry in sakai.properties.
-function rewriteYouTubeEmbeds(doc) {
-    embeds = doc.getElementsByTagName('embed');
+function rewriteYouTubeEmbeds() {
+    var embeds = document.getElementsByTagName('embed');
     for(var i = 0; i < embeds.length; ++i) {
-        embed = embeds[i]
+        var embed = embeds[i]
         if(embed.src && embed.src.match("^http://youtube.com|^http://www.youtube.com")) {
             embed.src = embed.src.replace('http://', '//');
         }
     }
 
-    iframes = doc.getElementsByTagName('iframe');
+    var iframes = document.getElementsByTagName('iframe');
     for(var i = 0; i < iframes.length; ++i) {
-        iframe = iframes[i]
+        var iframe = iframes[i]
         if(iframe.src && iframe.src.match("^http://youtube.com|^http://www.youtube.com")) {
             iframe.src = iframe.src.replace('http://', '//');
         }
