@@ -650,21 +650,24 @@ function fixMixedContentOnLoad() {
     addEvent(window, 'load', fixMixedContent);
 }
 
-// Fix for mixed content blocked in Firefox and IE
+// Fix for mixed content blocked in Firefox and IE, includes youtube refs and link hrefs
 function fixMixedContentReferences() {
     rewriteYouTubeEmbeds();
-    if (window.top != window.self) {
-        // I am in an iframe
-        fixLinksForMixedContent();
-    }
+    fixLinksForMixedContent();
 }
 
+// Adjusts links to account for blocked mixed content by changing old WebLearn addresses and opening http:// in new windows.
+// Only makes adjustments when in an iframe since the top window can be altered with impunity.
 function fixLinksForMixedContent() {
-    var links = window.self.document.getElementsByTagName('a');
+    if (window.top != window.self) {
+        // I am in an iframe
 
-    for(var i = 0; i < links.length; ++i) {
-        rewriteWebLearnHref(links[i]);
-        addTargetBlank(links[i]);
+        var links = window.self.document.getElementsByTagName('a');
+
+        for(var i = 0; i < links.length; ++i) {
+            rewriteWebLearnHref(links[i]);
+            addTargetBlank(links[i]);
+        }
     }
 }
 
