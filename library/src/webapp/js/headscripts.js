@@ -647,7 +647,7 @@ function addEvent(element, event, fn) {
 
 // Fixes links / references to insecure content once the window loads
 function fixMixedContentOnLoad() {
-    addEvent(window, 'load', fixMixedContent);
+    addEvent(window, 'load', fixLinksForMixedContent);
 }
 
 // Fix for mixed content blocked in Firefox and IE, includes youtube refs and link hrefs
