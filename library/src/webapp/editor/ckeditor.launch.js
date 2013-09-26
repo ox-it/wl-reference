@@ -54,6 +54,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config) {
 
         // WL-2974 allow right mouse click to display the native browser menu
         removePlugins: 'contextmenu',
+        disableNativeSpellChecker: false,
 
         // WL-2917 This is to prevent CKEditor wrapping <link/> tags in <p> tags, although it's not valid HTML
         // lots of places put <link/> tags to style their HTML fragments and under FCKEditor it worked fine.
