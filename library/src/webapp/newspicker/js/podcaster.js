@@ -165,8 +165,9 @@ function PodcastPickerInit(o) {
     // partial read function, reads in data for filtering/search
     function _partialRead() {
         itemEl = this.el;
-        
-        type = itemEl.find('guid').text().match(/(-)([A-z]*)$/)[2];
+        var type = 'unknown';
+        var parts = itemEl.find('guid').text().match(/(-)([A-z]*)$/);
+        if (parts && parts.length > 2) type = parts[2];
         if (type == 'podcasts') type = 'audio';
         this.type = type;
         
