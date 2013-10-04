@@ -409,8 +409,8 @@ function PodcastPickerInit(o) {
             });
             
             // update sorted cache
-            getSortedData('date', 'A');
-            getSortedData('date', 'D');
+            getSortedData('date', true);
+            getSortedData('date', false);
              
             updateSortData();            
             
