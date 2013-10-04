@@ -15,7 +15,17 @@ function getTime() { return new Date().getTime(); }
 
 /* Log */
 function console_log() {
-    //console.log.apply(console, console_log.arguments); 
+    if (console && console.log) {
+        if(console.log.apply) {
+            console.log.apply(console, console_log.arguments);
+        } else {
+            var out = "";
+            for (var i = 0; i < console_log.arguments.length; i++) {
+               out += console_log.arguments[i] +" ";
+           }
+           console.log(out);
+        }
+    }
     }
 
 // encapsulation
@@ -61,7 +71,7 @@ function PodcastPickerInit(o) {
     var ScrollContainer = null;
     var LoadingElement = null;
 
-    var PodcastDataRoot = null;         // podcast data xml root node
+    var $xmlData = null;         // podcast data xml root node
     var PodcastData = null;             // all podcast data
     var CurrentPodcastData = null;      // currently used podcast data set
     var Highlight_Re = null;            // highlighter regexp
@@ -113,7 +123,7 @@ function PodcastPickerInit(o) {
     
     // function, that returns a path relative to the JS file
     var relativePath = (function() {
-        var prefix = $('script[src$=' + OPTIONS.filename + ']').attr('src').replace(RegExp(OPTIONS.filename + '$'), '');
+        var prefix = $('script[src$="' + OPTIONS.filename + '"]').attr('src').replace(RegExp(OPTIONS.filename + '$'), '');
         return function(path) {
             if (isAbsolute(path)) return path;
             return prefix + path;
@@ -165,10 +175,11 @@ function PodcastPickerInit(o) {
     // partial read function, reads in data for filtering/search
     function _partialRead() {
         itemEl = this.el;
-        var type = 'unknown';
-        var parts = itemEl.find('guid').text().match(/(-)([A-z]*)$/);
-        if (parts && parts.length > 2) type = parts[2];
+
+        var typeNode = itemEl.find(XPATH.TYPE);
+        var type = typeNode.attr('label');
         if (type == 'podcasts') type = 'audio';
+        if (type === undefined) type = "unknown";
         this.type = type;
         
         this.division = itemEl.find(XPATH.CATEGORY).attr('term');
@@ -373,19 +384,20 @@ function PodcastPickerInit(o) {
         dataType: 'xml',
         success: function(data) {
             st = getTime();
-            PodcastDataRoot = $(data);  // store xml - DO NOT REMOVE OR SAFARI COMPLAINS
+            $xmlData = $(data);  // store xml - DO NOT REMOVE OR SAFARI COMPLAINS
             
-            // test xpath selection capabilites
-            xpath_backslash = ($(data).find('item:first').find('atom\\:updated').length > 0);
-            XPATH.THUMBNAIL = xpath_backslash ? 'media\\:thumbnail' : '[nodeName=media:thumbnail]';
-            XPATH.CATEGORY = xpath_backslash ? 'atom\\:category:first' : '[nodeName=atom:category]:first';
-            XPATH.FACULTY = xpath_backslash ? 'atom\\:category:eq(1)' : '[nodeName=atom:category]:eq(1)';
-            XPATH.UPDATED = xpath_backslash ? 'atom\\:updated' : '[nodeName=atom:updated]';
+            // some browsers don't drop the namespace.
+            XPATH.THUMBNAIL = 'media\\:thumbnail, thumbnail';
+            XPATH.CATEGORY = 'atom\\:category:first, category:first';
+            XPATH.FACULTY = 'atom\\:category:eq(1), category:eq(1)';
+            XPATH.UPDATED = 'atom\\:updated, updated';
+            //XPATH.TYPE = xpath_backslash ? 'atom\\:category': '';
+            XPATH.TYPE = 'atom\\:category[term=kind], category[term=kind]';
             
             // preprocess the data - extract information that will used
             // in top-level handling
             PodcastData = [];
-            $(data).find('item').each(function(i) {
+            $xmlData.find('item').each(function(i) {
                 data = preloadPodcastData($(this), i);
                 data.partialRead();
                 PodcastData.push(data);
