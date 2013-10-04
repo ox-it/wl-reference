@@ -15,10 +15,12 @@ function getTime() { return new Date().getTime(); }
 
 /* Log */
 function console_log() {
+    return; // Disable
     if (console && console.log) {
-        if(console.log.apply) {
+        if(console.log.apply) { // There's no console.log.apply in IE8
             console.log.apply(console, console_log.arguments);
         } else {
+            // Just concat stuff;
             var out = "";
             for (var i = 0; i < console_log.arguments.length; i++) {
                out += console_log.arguments[i] +" ";
@@ -26,7 +28,7 @@ function console_log() {
            console.log(out);
         }
     }
-    }
+}
 
 // encapsulation
 function PodcastPickerInit(o) {    
