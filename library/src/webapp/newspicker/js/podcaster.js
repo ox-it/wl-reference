@@ -99,7 +99,9 @@ function PodcastPickerInit(o) {
     /* Returns a full dataset, sorted according to given criteria */
     var _sortFunctions = {
         'titleA': function(a,b) { return a.title.localeCompare(b.title); },
-        'titleD': function(a,b) { return b.title.localeCompare(a.title); }
+        'titleD': function(a,b) { return b.title.localeCompare(a.title); },
+        'dateA': function(a,b) { return a.updated.localeCompare(b.updated); },
+        'dateD': function(a,b) { return b.updated.localeCompare(a.updated); }
     };
     var _getSortedDataCache = {};
     function getSortedData(field, asc) {
@@ -167,7 +169,6 @@ function PodcastPickerInit(o) {
         thumbNode = itemEl.find(XPATH.THUMBNAIL);
         // this.updated = itemEl.find('[nodeName=atom:updated]').text(),
         this.thumbnail_url = thumbNode.attr('url');
-        this.updated = itemEl.find(XPATH.UPDATED).text().substring(0,10);
         this.division_label = itemEl.find(XPATH.CATEGORY).attr('label');
         this.faculty_label = itemEl.find(XPATH.FACULTY).attr('label');
         this.fullRead = _nullFunc;  // replace fullRead with an empty func
@@ -181,7 +182,9 @@ function PodcastPickerInit(o) {
         if (type == 'podcasts') type = 'audio';
         if (type === undefined) type = "unknown";
         this.type = type;
-        
+
+        this.updated = itemEl.find(XPATH.UPDATED).text().substring(0,10);
+
         this.division = itemEl.find(XPATH.CATEGORY).attr('term');
         this.description = itemEl.find('description').text();
         this.partialRead = _nullFunc;
@@ -404,10 +407,8 @@ function PodcastPickerInit(o) {
             });
             
             // update sorted cache
-            _getSortedDataCache['dateD'] = PodcastData;
-            DataCopy = PodcastData.slice(0);
-            DataCopy.reverse();
-            _getSortedDataCache['dateA'] = DataCopy;
+            getSortedData('date', 'A');
+            getSortedData('date', 'D');
              
             updateSortData();            
             
