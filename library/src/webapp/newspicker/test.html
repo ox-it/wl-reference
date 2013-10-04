@@ -4,7 +4,6 @@
 <html>
     <head>
         <script src="js/jquery.lib.js"></script>
-        <!--<script src="js/jquery-1.6.4.min.js"></script>-->
         <script src="js/jquery-ui.lib.js"></script>
         <script src="js/jquery.defer.lib.js"></script>
         <script src="js/jqmodal.lib.js"></script>
@@ -12,7 +11,7 @@
         <script>
             $(window).ready(function() {
                 podcastPicker = PodcastPickerInit({
-                    rssFile: 'meta.xml',
+                    rssFile: 'podcasts.xml',
                     triggerElements: $('button'),   // CSS to select all elements that open the picker
                     genericThumbnails: true, // use generic thumbnails instead of those specified in the file
                     // selection callback, podcast contains the podcast data, $(this) refers to the input that originally opened the picker
