@@ -52,10 +52,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config) {
         filebrowserFlashBrowseUrl :'/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Type=Flash&Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + folder,
         extraPlugins: (sakai.editor.enableResourceSearch ? 'resourcesearch' : ''),
 
-        // WL-2974 allow right mouse click to display the native browser menu
-        removePlugins: 'contextmenu',
+        // These two settings enable the browser's native spell checking and context menus.
+        // Control-Right-Click (Windows/Linux) or Command-Right-Click (Mac) on highlighted words
+        // will cause the CKEditor menu to be suppressed and display the browser's standard context
+        // menu. In some cases (Firefox and Safari, at least), this supplies corrections, suggestions, etc.
         disableNativeSpellChecker: false,
-
+        browserContextMenuOnCtrl: true,
         // WL-2917 This is to prevent CKEditor wrapping <link/> tags in <p> tags, although it's not valid HTML
         // lots of places put <link/> tags to style their HTML fragments and under FCKEditor it worked fine.
         // A better way to fix it would be to allow resources to create full HTML pages.
