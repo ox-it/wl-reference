@@ -634,3 +634,86 @@ function browserSafeDocHeight() {
 	}
 	return Math.max(winHeight,docHeight); 
 }
+
+// In the absence of jQuery, add an event listener
+function addEvent(element, event, fn) {
+    if (element.addEventListener) {
+        element.addEventListener(event, fn, false);
+    } else if (element.attachEvent) {
+        // IE 8
+        element.attachEvent('on' + event, fn);
+    }
+}
+
+// Fixes links / references to insecure content once the window loads
+function fixMixedContentOnLoad() {
+    addEvent(window, 'load', fixMixedContentReferences);
+}
+
+// Fix for mixed content blocked in Firefox and IE, includes youtube refs and link hrefs
+function fixMixedContentReferences() {
+    rewriteVideoEmbeds();
+    fixLinksForMixedContent();
+}
+
+// Adjusts links to account for blocked mixed content by changing old WebLearn addresses and opening http:// in new windows.
+// Only makes adjustments when in an iframe since the top window can be altered with impunity.
+function fixLinksForMixedContent() {
+    if (window.top != window.self) {
+        // I am in an iframe
+
+        var links = window.self.document.getElementsByTagName('a');
+
+        for(var i = 0; i < links.length; ++i) {
+            rewriteWebLearnHref(links[i]);
+            addTargetBlank(links[i]);
+        }
+    }
+}
+
+// rewrites old weblearn links to the new address, called from forceLinksInNewWindow(),
+// this could have its own entry in sakai.properties.
+function rewriteWebLearnHref(link) {
+    if(link.href) {
+        if(link.href.match("^http://weblearn.ox.ac.uk|^http://beta.weblearn.ox.ac.uk")) {
+            link.href = link.href.replace("http://weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+            link.href = link.href.replace("http://beta.weblearn.ox.ac.uk", "https://weblearn.ox.ac.uk");
+        }
+    }
+}
+
+// Sets the target property to '_blank' so that insecure content is opened in a new window
+function addTargetBlank(link) {
+    if(link.href && link.href.match(/^http:/)) {
+        if(link.target == '' || link.target.match(/_self|_parent/)) {
+            link.target = '_blank';
+        }
+    }
+}
+
+// rewrites embedded youtube content to be protocol agnostic, called from forceLinksInNewWindow(),
+// this could have its own entry in sakai.properties.
+function rewriteVideoEmbeds() {
+    var embeds = document.getElementsByTagName('embed');
+    for(var i = 0; i < embeds.length; ++i) {
+        var embed = embeds[i]
+        if(embed.src && embed.src.match("^http://youtube.com|^http://www.youtube.com|^http://player.vimeo.com")) {
+            embed.src = embed.src.replace('http://', '//');
+        }
+    }
+
+    var iframes = document.getElementsByTagName('iframe');
+    for(var i = 0; i < iframes.length; ++i) {
+        var iframe = iframes[i]
+        if(iframe.src && iframe.src.match("^http://youtube.com|^http://www.youtube.com|^http://player.vimeo.com")) {
+            iframe.src = iframe.src.replace('http://', '//');
+        }
+
+    }
+}
+
+// the function to call when oxitems has finished loading
+function oxitemsCallback() {
+    fixLinksForMixedContent();
+}
+
