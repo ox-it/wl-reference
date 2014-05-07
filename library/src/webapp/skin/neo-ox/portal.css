@@ -152,14 +152,22 @@ that can be used or hidden,can also use a background: url(images/<image name>.<e
 }
 /* show #mastLogo if the user is not logged in so that we can display the logo in the usual place (the logo
 in this skin is rendered via ul.topnav, which a anon user does not see)*/
-#headerMin #mastLogo {
+#mastLogo {
     display: block; 
     background-image: url(images/logo.png);
     background-repeat: no-repeat;
     background-position: 8px 4px;
     float: left;
-    width: 140px;
     height: 40px;
+}
+#mastLogo p#logotext {
+    display: block; 
+    float: left;
+    margin: 0.5em;
+    font-size: 1.5em;
+    margin-left: 2.5em;
+    color: #fff;
+    font-family: 'Helvetica Neue', Arial
 }
 /* another container wrapping branding images - portal outputs one /library/skin/<skin name>/images/banner_inst.gif
 that can be used or hidden,can also use a background: url(images/<image name>.<ext>) in this block,or both superimposing them  */
@@ -175,7 +183,6 @@ that can be used or hidden,can also use a background: url(images/<image name>.<e
 */
 #mastLogin {
     float: right;
-    padding: 12px 8px 8px;
 }
 /* #mastLogin #loginForm is the form for login - contains children #eid #pw #submit as well as labels for these inputs*/
 #loginForm {
@@ -200,11 +207,18 @@ that can be used or hidden,can also use a background: url(images/<image name>.<e
     float: right;
     color: #aaa;
     margin: 0;
+    padding: 10px 10px 0 0;
 }
 /* login links for CAS,logout link  */
 #loginLinks a, #loginLinks a:visited {
     color: #fff;
     float: right;
+}
+#loginLinks p#prelogin {
+    color: #eee;
+    float: right;
+    margin: 1px;
+    margin-right: 10px;
 }
 /* #loginLink1 is the "login/logout" link in a CAS setup, #loginLink2 is the secondary CAS link: login for
 guests, for example */ 
@@ -237,14 +251,6 @@ guests, for example */
 #loginLink1:hover, #loginLink2:hover, form#loginForm input#submit:hover {
     background: #3d4045;
     text-decoration: none;
-}
-/*make secondary CAS login link (ie. Guest Login) different*/ 
-#loginLink2, #loginLink2:hover {
-    background: none;
-    border: none;
-}
-#loginLink2:hover  {
-    text-decoration: underline;
 }
 /* container for the link to open the user menu, and the menu itself */
 #loginLinks .topnav {
@@ -357,16 +363,27 @@ ul.nav-submenu li.submenuitem a, #mastLogin li.submenuitem a, #otherSiteTools li
 /* wrapper for the site link list and link to the 'more sites' tray - since the logo is displayed here on left, it is padded.*/
 #linkNav {
     display: block;
-    padding-right: 300px;
+    float: left;
+    display: block;
 }
 /* site tab navigation: a list right padding makes room for logo and matches width of tool menu
  * if you do not have a logo you can eliminate it to save some room */
 #linkNav ul.topnav {
     list-style: none;
-    padding: 8px 0 5px 155px; /* matches the width of the toolMenu*/
+    display: inline;
+}
+.personalSites {
+    float: right;
+}
+.personalSites ul.topnav {
+    list-style: none;
+    padding: 8px 0 5px 0;
     margin: 0;
     width: 100%;
-    background: transparent url(images/logo.png) 8px 4px no-repeat;
+    display: inline;
+}
+.clear {
+    clear: both;
 }
 /* the individual containers for the site links, tool menu control, tool menu*/
 ul.topnav li {
@@ -374,7 +391,7 @@ ul.topnav li {
     /* Note: IE 7 hack and IE 8 compat mode*/
     *display: inline;
     *float: left;
-    margin: 0 5px 0 0;
+    margin: 5px 5px 0 0;
     padding: 0;
     position: relative; /*--Declare X and Y axis base for sub navigation--*/
     font-weight: bold;
