@@ -654,6 +654,10 @@ function fixMixedContentOnLoad() {
 function fixMixedContentReferences() {
     rewriteVideoEmbeds();
     fixLinksForMixedContent();
+
+    if (document.location.origin.match('https?://staging.weblearn.ox.ac.uk')) {
+        fixLinksForStaging();
+    }
 }
 
 // Adjusts links to account for blocked mixed content by changing old WebLearn addresses and opening http:// in new windows.
@@ -667,6 +671,22 @@ function fixLinksForMixedContent() {
         for(var i = 0; i < links.length; ++i) {
             rewriteWebLearnHref(links[i]);
             addTargetBlank(links[i]);
+        }
+    }
+}
+
+// This should only be called if we are in the staging environment. It replaces WebLearn urls with local ones.
+function fixLinksForStaging() {
+
+    var links = window.self.document.getElementsByTagName('a');
+
+    for(var i = 0; i < links.length; ++i) {
+        var link = links[i];
+        if(link.href.match("^https?://weblearn.ox.ac.uk/|^https?://beta.weblearn.ox.ac.uk/")) {
+            link.href = link.href.replace("http://weblearn.ox.ac.uk/", "/");
+            link.href = link.href.replace("https://weblearn.ox.ac.uk/", "/");
+            link.href = link.href.replace("http://beta.weblearn.ox.ac.uk/", "/");
+            link.href = link.href.replace("https://beta.weblearn.ox.ac.uk/", "/");
         }
     }
 }
