@@ -258,17 +258,22 @@ function PodcastPickerInit(o) {
                     .find('.faculty').text(podcast.faculty_label).end()
                     .find('.description').html(description).end()
                 ;
-                
+
+                // This is a hack because feeds without thumbnails currently have a URL starting with
+                // null, this should be fixed on the server in the long run.
+                var has_thumbnail = podcast.thumbnail_url && podcast.thumbnail_url.length > 0
+                    && podcast.thumbnail_url.indexOf("null") != 0;
+
                 // If generic thumbnails are used then don't even attempt to load the originals.
                 // Otherwise IE starts complaining about mixed content.
-                if (OPTIONS['genericThumbnails']) {
+                if (OPTIONS['genericThumbnails'] || !(has_thumbnail)) {
                     podcastEl
                         .find('.thumbnail').hide().end()
                         .find('.genericPlaceHolder').addClass(podcast.type + ' GenericType thumbnail').end()
                     ;
                     
                 } else {
-                	podcastEl.find('.thumbnail').attr('src', podcast.thumbnail_url).end()
+                    podcastEl.find('.thumbnail').attr('src', podcast.thumbnail_url).end()
                 }
                 
                 // add data
@@ -291,7 +296,7 @@ function PodcastPickerInit(o) {
             });
              
             // rig up select button
-            Picker.find(OPTIONS['selectElement']).live('click', function(e) {
+            Picker.on('click', OPTIONS['selectElement'], function(e) {
                 podcast = $(this).closest('.podcast').data('data');
                 handleSelect.apply(TriggerElement, [podcast]);
                 Picker.jqmHide();
@@ -330,7 +335,7 @@ function PodcastPickerInit(o) {
             /* 7. Rig up Filter + Icons */
             $('#podcast_type_filter_all').attr('checked', true);
             $('#podcast_type_filter_box').buttonset();
-            $('#podcast_type_filter_box input').live('click', function(e) {
+            $('#podcast_type_filter_box input').on('click', function(e) {
                 Type_Filter = $('#podcast_type_filter_box input:checked').val();
                 DisplayContainer.trigger('update');
             });
@@ -379,19 +384,22 @@ function PodcastPickerInit(o) {
             bootLoader('PickerTemplate'); 
         } // if (st = 'success')
     });
-    
+
+    // Detect if we have ActiveXObject support (IE), feature detection, not browser.
+    var hasActiveX = (typeof ActiveXObject != "undefined");
 
     /*
         Grab the RSS file and pre-process it
     */
     $.ajax({
         url: OPTIONS.rssFile, 
-        dataType: ($.browser.msie) ? 'text' : 'xml', // IE is not happy about parsing some xml
+        dataType: (hasActiveX) ? 'text' : 'xml', // IE is not happy about parsing some xml
         success: function(data) {
             st = getTime();
 
             // we get IE to parse the xml explicitly in the callback instead
-            if ($.browser.msie) {
+            // This is only *needed* for IE8.
+            if (hasActiveX) {
                 var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
                 xmlDoc.loadXML(data);
                 data = xmlDoc;
@@ -438,13 +446,19 @@ function PodcastPickerInit(o) {
     function main() {  
         $('#podcast_sort_by-' + OPTIONS['defaultSortField']).trigger('refresh');
         $('#podcast_search_box').trigger('search');
-        
+
+        // Define a function as we use it twice.
+        var scrollStop = function(e) {
+            if (_LoadNext_) chunkLoadPodcasts();
+            _LoadNext_ = false;
+            _MouseDown_ = false;
+        };
+
         // rig up scroll event
         ScrollContainer.scroll(function(e) {
             // scroll condition (note the -100 which loads stuff slightly earlier)
             if (ScrollContainer.scrollTop() >= DisplayContainer.height() - ScrollContainer.height() - 100) {
-                // allow on-mouse-up loading - strangely, this only works on firefox
-                if ($.browser.mozilla && _MouseDown_) {
+                if (_MouseDown_) {
                     _LoadNext_ = true;
                     LoadingElement.show();
                 } else chunkLoadPodcasts();
@@ -453,13 +467,13 @@ function PodcastPickerInit(o) {
         
         ScrollContainer.mousedown(function(e) {
             _MouseDown_ = true;
+            // This is a hack for IE which doesn't generate a mouseup event. We attach a mousemove handler which doesn't
+            // get fired while the scrollbar is moving, but then when the scrollbar is released it does and so loads
+            // the next set of data.
+            $(window).one('mousemove', scrollStop);
         });
         
-        ScrollContainer.mouseup(function(e) {
-            if (_LoadNext_) chunkLoadPodcasts();
-            _LoadNext_ = false;
-            _MouseDown_ = false;
-        });
+        ScrollContainer.mouseup(scrollStop);
         
         // call ready callback on a 'control object', a proxy to control the podcast picker
         OPTIONS['onReady']({
