@@ -655,7 +655,10 @@ function fixMixedContentReferences() {
     rewriteVideoEmbeds();
     fixLinksForMixedContent();
 
-    if (document.location.origin.match('https?://staging2?.weblearn.ox.ac.uk')) {
+    // IE fix
+    var location = document.location.origin || window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+
+    if (location.match('https?://staging2?.weblearn.ox.ac.uk')) {
         fixLinksForStaging();
     }
 }
