@@ -229,7 +229,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         $.each(data, function(i, plugin) {
           // ... and add the plugin
           CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
-          ckconfig.extraPlugins +=  ',' + plugin,
+          ckconfig.extraPlugins +=  ',' + plugin;
         });
       });
     })();
