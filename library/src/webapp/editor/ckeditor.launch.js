@@ -30,6 +30,25 @@ sakai.editor.editors.ckeditor = {};
 // The config object allows for name-based config options to be passed.
 // The w and h parameters should be removed as soon as their uses can be migrated.
 sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
+  // function for getting json
+  // credit to Mathias Bynens (https://mathiasbynens.be/notes/xhr-responsetype-json)
+  var getJSON = function(url, successHandler, errorHandler, completeHandler) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status == 200) {
+        successHandler && successHandler(xhr.response);
+      } else {
+        errorHandler && errorHandler(status);
+      }
+    };
+    xhr.send();
+  };
+
+  // wrap configuration into one function
+  var loadCKConfig = function(jsonSuccess) {
     var folder = "";
 
     var collectionId = "";
@@ -61,28 +80,23 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     };
 
     // block the plugins according to the blocked plugins json
-    $.ajax({
-      dataType: 'json',
-      async: false, // only way to do this ajax call without refactoring this whole page script
-      url: '/direct/ckeditor-config/listBlockedPlugins.json', // change to url of blocked plugins json
-      success: function(json) {
-        // function to remove a plugin from a toolbar (i.e. a list of plugins)
-        var removePlugins = function(pluginsList, plugin) {
-          return $.grep(pluginsList, function(elem, index) {
-            return elem != plugin;
-          });
-        };
+    if (jsonSuccess) {
+      for (i in jsonSuccess) {
+        var plugin = jsonSuccess[i].data;
 
-        // loop through each restricted plugin and remove it from any of the
-        // toolbars defined above
-        $.each(json['ckeditor-config_collection'], function(i, plugin) {
-          $.each(wlckplugins, function(toolbar, list) {
-            // plugin.data is the name of the plugin from the json
-            wlckplugins[toolbar] = removePlugins(list, plugin.data);
+        // remove every plugin in the toolbar(s) that match(es) the current json element
+        for (toolbar in wlckplugins) {
+          wlckplugins[toolbar] = wlckplugins[toolbar].filter(function(toolbarPlugin) {
+            return toolbarPlugin != plugin;
           });
-        });
-      },
-    });
+        }
+      }
+    } else {
+      // block all of them
+      wlckplugins.general  = [];
+      wlckplugins.weblearn = [];
+      wlckplugins.oxford   = [];
+    }
 
     var ckconfig = {
 	//Some defaults for audio recorder
@@ -224,14 +238,16 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
       // WL-3501 load wl-ck-plugins
       // go through each toolbar...
-      $.each(wlckplugins, function(toolbar, data) {
+      for (toolbar in wlckplugins) {
+        var data = wlckplugins[toolbar];
         // ... then the remaining plugins in that toolbar ...
-        $.each(data, function(i, plugin) {
+        for (i in data) {
+          plugin = data[i];
           // ... and add the plugin
           CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
           ckconfig.extraPlugins +=  ',' + plugin;
-        });
-      });
+        }
+      }
     })();
 
     // ensure jQuery exists for when the editor loads
@@ -258,6 +274,14 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             setMainFrameHeightNow(window.name);
         }
     });
+  }
+
+  // finally, ajax call to blocked plugin list
+  getJSON('/direct/ckeditor-config/listBlockedPlugins.json', function(data) {
+    loadCKConfig(data);   // json successfully called
+  }, function(status) {
+    loadCKConfig(false);  // error calling json
+  });
 }
 
 sakai.editor.launch = sakai.editor.editors.ckeditor.launch;
