@@ -64,7 +64,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     $.ajax({
       dataType: 'json',
       async: false, // only way to do this ajax call without refactoring this whole page script
-      url: 'listBlockedPlugins.json', // change to url of blocked plugins json
+      url: '/direct/ckeditor-config/listBlockedPlugins.json', // change to url of blocked plugins json
       success: function(json) {
         // function to remove a plugin from a toolbar (i.e. a list of plugins)
         var removePlugins = function(pluginsList, plugin) {
