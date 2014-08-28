@@ -16,6 +16,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 (function($) {
 // fix url to live url when deployed
+// e.g. 'library/courses-js-widget/';
 var url = 'https://rawgit.com/lokothodida/courses-js-widget/dev/';
 var scripts = [
   url + 'lib/dataTables/js/jquery.dataTables.min.js',
@@ -84,10 +85,18 @@ $.fn.oxfordCoursesWidget = function(options) {
 
 // now bind the functionality to the containers
 var bindToContainers = function() {
-  $('.courses-widget-container, [data-researcher-training-tool]').oxfordCoursesWidget();
+  $('.courses-widget-container, [data-researcher-training-tool]').each(function(i, e) {
+    var $e = $(e);
+    var checkTables = $e.find('table');
+
+    // transform to a widget only if it hasn't already been transformed before
+    if (checkTables.length == 0) {
+      $e.oxfordCoursesWidget();
+    }
+  });
 };
 
 $(document).ready(bindToContainers);
-bindToContainers();
+//bindToContainers();
 
 })(jQuery);
