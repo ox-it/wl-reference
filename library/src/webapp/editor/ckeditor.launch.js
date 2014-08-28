@@ -81,8 +81,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
     // block the plugins according to the blocked plugins json
     if (jsonSuccess) {
-      for (i in jsonSuccess) {
-        var plugin = jsonSuccess[i].data;
+      for (i in jsonSuccess['ckeditor-config_collection']) {
+        var plugin = jsonSuccess['ckeditor-config_collection'][i].data;
 
         // remove every plugin in the toolbar(s) that match(es) the current json element
         for (toolbar in wlckplugins) {
