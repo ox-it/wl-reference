@@ -1,0 +1,52 @@
+var editor, html = '';
+var scripts = document.getElementsByTagName("script");
+
+// getting absolute url of current file
+var src = scripts[scripts.length-1].baseURI.split('/');
+    src.pop(); // remove current file
+    src.pop(); // remove current directory
+    src = src.join('/');
+
+function createEditor() {
+  if (editor) {
+    return;
+  }
+
+  var config = {};
+  editor = CKEDITOR.appendTo('editor', config, html);
+  editor.config.allowedContent = true;
+
+  CKEDITOR.plugins.addExternal('youtube', src + '/youtube/', 'plugin.js');
+  editor.config.extraPlugins += 'youtube,';
+}
+
+function removeEditor() {
+  if (!editor) {
+    return;
+  }
+
+  document.getElementById('editorcontents').innerHTML = html = editor.getData();
+  document.getElementById('contents').style.display = '';
+
+  editor.destroy();
+  editor = null;
+
+  // done for the sake of this preview (to evaluate the scripts)
+  var $contents = $('<div/>').append($('#editorcontents').clone());
+  var assets = $contents.find('script, link');
+  var head = $('head');
+
+  // add the assets
+  assets.each(function(i, asset) {
+    var $asset = $(asset);
+    if ($asset.prop("tagName") == 'SCRIPT') {
+      if ($asset.attr('src')) {
+        $.getScript($asset.attr('src'));
+      } else {
+        console.log($asset.html());
+      }
+    } else {
+      head.append($asset);
+    }
+  });
+}

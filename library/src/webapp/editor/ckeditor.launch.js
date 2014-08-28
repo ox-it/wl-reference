@@ -30,6 +30,25 @@ sakai.editor.editors.ckeditor = {};
 // The config object allows for name-based config options to be passed.
 // The w and h parameters should be removed as soon as their uses can be migrated.
 sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
+  // function for getting json
+  // credit to Mathias Bynens (https://mathiasbynens.be/notes/xhr-responsetype-json)
+  var getJSON = function(url, successHandler, errorHandler, completeHandler) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status == 200) {
+        successHandler && successHandler(xhr.response);
+      } else {
+        errorHandler && errorHandler(status);
+      }
+    };
+    xhr.send();
+  };
+
+  // wrap configuration into one function
+  var loadCKConfig = function(jsonSuccess) {
     var folder = "";
 
     var collectionId = "";
@@ -46,6 +65,38 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
     var language = sakai.locale && sakai.locale.userLanguage || '';
     var country = sakai.locale && sakai.locale.userCountry || null;
+
+    // WL-3501 plugins list
+    var wlckplugins = {
+      general: [
+        'youtube', 'twitter', 'vimeo', 'creative-commons-images',
+      ],
+      weblearn : [
+        'folder-listing', 'image-gallery',
+      ],
+      oxford : [
+        'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems',
+      ],
+    };
+
+    // block the plugins according to the blocked plugins json
+    if (jsonSuccess) {
+      for (i in jsonSuccess) {
+        var plugin = jsonSuccess[i].data;
+
+        // remove every plugin in the toolbar(s) that match(es) the current json element
+        for (toolbar in wlckplugins) {
+          wlckplugins[toolbar] = wlckplugins[toolbar].filter(function(toolbarPlugin) {
+            return toolbarPlugin != plugin;
+          });
+        }
+      }
+    } else {
+      // block all of them
+      wlckplugins.general  = [];
+      wlckplugins.weblearn = [];
+      wlckplugins.oxford   = [];
+    }
 
     var ckconfig = {
 	//Some defaults for audio recorder
@@ -101,6 +152,11 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             (sakai.editor.enableResourceSearch
                 ? ['AudioRecorder','ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']
                 : ['AudioRecorder','Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']),
+            '/',
+            // WL-3501 placement for toolbars
+            wlckplugins.general,
+            wlckplugins.weblearn,
+            wlckplugins.oxford,
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
@@ -179,7 +235,23 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
+
+      // WL-3501 load wl-ck-plugins
+      // go through each toolbar...
+      for (toolbar in wlckplugins) {
+        var data = wlckplugins[toolbar];
+        // ... then the remaining plugins in that toolbar ...
+        for (i in data) {
+          plugin = data[i];
+          // ... and add the plugin
+          CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
+          ckconfig.extraPlugins +=  ',' + plugin;
+        }
+      }
     })();
+
+    // ensure jQuery exists for when the editor loads
+    CKEDITOR.scriptLoader.load('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
 
 	  CKEDITOR.replace(targetId, ckconfig);
       //SAK-22505
@@ -202,6 +274,14 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             setMainFrameHeightNow(window.name);
         }
     });
+  }
+
+  // finally, ajax call to blocked plugin list
+  getJSON('/direct/ckeditor-config/listBlockedPlugins.json', function(data) {
+    loadCKConfig(data);   // json successfully called
+  }, function(status) {
+    loadCKConfig(false);  // error calling json
+  });
 }
 
 sakai.editor.launch = sakai.editor.editors.ckeditor.launch;
