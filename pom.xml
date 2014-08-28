@@ -18,6 +18,7 @@
     <url>https://source.sakaiproject.org/svn/reference/trunk</url>
   </scm>
   <modules>
+    <module>ckeditor-config</module>
     <module>library</module>
   </modules>
 </project>
