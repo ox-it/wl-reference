@@ -47,6 +47,43 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     var language = sakai.locale && sakai.locale.userLanguage || '';
     var country = sakai.locale && sakai.locale.userCountry || null;
 
+    // WL-3501 plugins list
+    var wlckplugins = {
+      general: [
+        'youtube', 'twitter', 'vimeo', 'creative-commons-images',
+      ],
+      weblearn : [
+        'folder-listing', 'image-gallery',
+      ],
+      oxford : [
+        'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems',
+      ],
+    };
+
+    // block the plugins according to the blocked plugins json
+    $.ajax({
+      dataType: 'json',
+      async: false, // only way to do this ajax call without refactoring this whole page script
+      url: 'listBlockedPlugins.json', // change to url of blocked plugins json
+      success: function(json) {
+        // function to remove a plugin from a toolbar (i.e. a list of plugins)
+        var removePlugins = function(pluginsList, plugin) {
+          return $.grep(pluginsList, function(elem, index) {
+            return elem != plugin;
+          });
+        };
+
+        // loop through each restricted plugin and remove it from any of the
+        // toolbars defined above
+        $.each(json['ckeditor-config_collection'], function(i, plugin) {
+          $.each(wlckplugins, function(toolbar, list) {
+            // plugin.data is the name of the plugin from the json
+            wlckplugins[toolbar] = removePlugins(list, plugin.data);
+          });
+        });
+      },
+    });
+
     var ckconfig = {
 	//Some defaults for audio recorder
         audiorecorder : {
@@ -101,6 +138,11 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             (sakai.editor.enableResourceSearch
                 ? ['AudioRecorder','ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']
                 : ['AudioRecorder','Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']),
+            '/',
+            // WL-3501 placement for toolbars
+            wlckplugins.general,
+            wlckplugins.weblearn,
+            wlckplugins.oxford,
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
@@ -179,6 +221,17 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
+
+      // WL-3501 load wl-ck-plugins
+      // go through each toolbar...
+      $.each(wlckplugins, function(toolbar, data) {
+        // ... then the remaining plugins in that toolbar ...
+        $.each(data, function(i, plugin) {
+          // ... and add the plugin
+          CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
+          ckconfig.extraPlugins +=  ',' + plugin,
+        });
+      });
     })();
 
 	  CKEDITOR.replace(targetId, ckconfig);
