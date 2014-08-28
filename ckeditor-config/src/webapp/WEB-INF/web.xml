@@ -7,10 +7,6 @@
     <display-name>CKEditor Config</display-name>
     <description>CKEditor Config Enity Provider</description>
 
-    <!--  The ToolListener causes this tool to be registered with Sakai.  -->
-    <listener>
-        <listener-class>org.sakaiproject.util.ToolListener</listener-class>
-    </listener>
     <listener>
         <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
     </listener>
