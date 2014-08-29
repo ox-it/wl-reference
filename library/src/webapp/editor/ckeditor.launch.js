@@ -69,7 +69,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     // WL-3501 plugins list
     var wlckplugins = {
       general: [
-        'youtube', 'twitter', 'vimeo', 'creative-commons-images',
+        'jquery', 'youtube', 'twitter', 'vimeo', 'creative-commons-images',
       ],
       weblearn : [
         'folder-listing', 'image-gallery',
