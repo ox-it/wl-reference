@@ -635,21 +635,6 @@ function browserSafeDocHeight() {
 	return Math.max(winHeight,docHeight); 
 }
 
-// In the absence of jQuery, add an event listener
-function addEvent(element, event, fn) {
-    if (element.addEventListener) {
-        element.addEventListener(event, fn, false);
-    } else if (element.attachEvent) {
-        // IE 8
-        element.attachEvent('on' + event, fn);
-    }
-}
-
-// Fixes links / references to insecure content once the window loads
-function fixMixedContentOnLoad() {
-    addEvent(window, 'load', fixMixedContentReferences);
-}
-
 // Fix for mixed content blocked in Firefox and IE, includes youtube refs and link hrefs
 function fixMixedContentReferences() {
     rewriteVideoEmbeds();
@@ -726,7 +711,6 @@ function rewriteVideoEmbeds() {
             embed.parentNode.replaceChild(clone, embed);
         }
     }
-
     var iframes = document.getElementsByTagName('iframe');
     for(var i = 0; i < iframes.length; ++i) {
         var iframe = iframes[i]
