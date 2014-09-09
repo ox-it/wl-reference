@@ -77,36 +77,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     var language = sakai.locale && sakai.locale.userLanguage || '';
     var country = sakai.locale && sakai.locale.userCountry || null;
 
-    // WL-3501 plugins list
-    var wlckplugins = {
-      general: [
-        'jquery', 'youtube', 'twitter', 'vimeo', 'creative-commons-images',
-      ],
-      weblearn : [
-        'folder-listing', 'image-gallery',
-      ],
-      oxford : [
-        'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems',
-      ],
-    };
-
     // block the plugins according to the blocked plugins json
     if (jsonSuccess) {
       for (i in jsonSuccess['ckeditor-config_collection']) {
         var plugin = jsonSuccess['ckeditor-config_collection'][i].data;
 
-        // remove every plugin in the toolbar(s) that match(es) the current json element
-        for (toolbar in wlckplugins) {
-          wlckplugins[toolbar] = wlckplugins[toolbar].filter(function(toolbarPlugin) {
-            return toolbarPlugin != plugin;
-          });
-        }
       }
-    } else {
-      // block all of them
-      wlckplugins.general  = [];
-      wlckplugins.weblearn = [];
-      wlckplugins.oxford   = [];
     }
 
     var ckconfig = {
@@ -163,11 +139,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             (sakai.editor.enableResourceSearch
                 ? ['AudioRecorder','ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']
                 : ['AudioRecorder','Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']),
-            '/',
-            // WL-3501 placement for toolbars
-            wlckplugins.general,
-            wlckplugins.weblearn,
-            wlckplugins.oxford,
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
@@ -251,18 +222,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
 
-      // WL-3501 load wl-ck-plugins
-      // go through each toolbar...
-      for (toolbar in wlckplugins) {
-        var data = wlckplugins[toolbar];
-        // ... then the remaining plugins in that toolbar ...
-        for (i in data) {
-          plugin = data[i];
-          // ... and add the plugin
-          CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
-          ckconfig.extraPlugins +=  ',' + plugin;
-        }
-      }
     })();
 
     // ensure jQuery exists for when the editor loads
