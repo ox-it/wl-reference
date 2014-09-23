@@ -221,11 +221,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
-
     })();
-
-    // ensure jQuery exists for when the editor loads
-    CKEDITOR.scriptLoader.load('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
 
 	  CKEDITOR.replace(targetId, ckconfig);
       //SAK-22505
