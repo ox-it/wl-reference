@@ -829,8 +829,8 @@ placeholder till more standard way of doing it*/
 }
 
 .login td.logo, .join td.logo{
-	width: 13em;
-	background:#fff url(../image/sakai.jpg) top left no-repeat
+	width: 9em;
+	background:#fff url(../skin/neo-ox/images/x-login-logo.png) top left no-repeat
 }
 
 .login td.form, .login td.form{
