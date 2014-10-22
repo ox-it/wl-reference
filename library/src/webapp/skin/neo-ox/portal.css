@@ -656,40 +656,40 @@ ul#otherSiteList li, ul.otherSitesCategorList li, ul.otherQuickLinksCategorList 
 }
 /* container for tray that opens when "Quick Links" is activated */
 #selectQuickLinks {
-	background: #f3f3f3;
-	border-width: 0;
-	border: 1px solid #888;
-	color: #000;
-	left: 69%;
-	line-height: 1.5em;
-	padding: 0 15px 15px 0;
-	position: absolute;
-	right: 4px;
-	top: 34px;
-	vertical-align: middle;
-	width: 12%;
-	z-index: 9999;
-	border-radius: 0px 0px 5px 5px;
-	-moz-border-radius: 0px 0px 5px 5px;
-	-webkit-border-radius: 0px 0px 5px 5px;
-	box-shadow: 0 0 10px #555;
-	-moz-box-shadow: 0 0 10px #555;
-	-webkit-box-shadow: 0 0 10px #555;
+    background: #f3f3f3;
+    border-width: 0;
+    border: 1px solid #888;
+    color: #000;
+    left: 69%;
+    line-height: 1.5em;
+    padding: 0 15px 15px 0;
+    position: absolute;
+    right: 4px;
+    top: 34px;
+    vertical-align: middle;
+    width: 12%;
+    z-index: 9999;
+    border-radius: 0px 0px 5px 5px;
+    -moz-border-radius: 0px 0px 5px 5px;
+    -webkit-border-radius: 0px 0px 5px 5px;
+    box-shadow: 0 0 10px #555;
+    -moz-box-shadow: 0 0 10px #555;
+    -webkit-box-shadow: 0 0 10px #555;
 }
 ul.otherQuickLinksCategorList li {
-	width: 12em;
-	line-height: 1.2em;
+    width: 12em;
+    line-height: 1.2em;
 }
 ul.otherQuickLinksCategorList {
-	float:right;
+    float:right;
 }
 #quickLinksIcon {
-	width: 16px;
-	right: auto;
-	top: 2px;
+    width: 16px;
+    right: auto;
+    top: 2px;
 }
 .quickLinksText {
-	margin-left: 30px;
+    margin-left: 30px;
 }
 ul#otherSiteList li a, ul.otherSitesCategorList li a, ul.otherQuickLinksCategorList li a {
     display: block;
