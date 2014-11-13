@@ -836,7 +836,7 @@ ul#otherSiteList li a span, ul.otherSitesCategorList li a span {
 #siteBanner div:first-child {
 	position:absolute;
 	top:50%;
-	transform:translate(0, -50%);
+	margin-top: -3.5em;
 	padding:20px;
 }
 
