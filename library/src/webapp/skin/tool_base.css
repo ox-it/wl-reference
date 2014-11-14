@@ -798,7 +798,7 @@ input.upload{
 	display: inline;
 	position: absolute;
 	top: -999px;
-	left: -999px;
+	left: -999px !important;
 	height: 0;
 }
 /*"inactive" gets applied to a container whose children you want to make look grayed out (not inactive per se) - applies to all textual elements and images
