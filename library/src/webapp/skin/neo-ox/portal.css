@@ -2119,8 +2119,7 @@ html > body .ui-pnotify {
 	cursor: pointer;
 	display: inline-block;
 	font-family: "PT Sans","Helvetica Neue",Arial,Helvetica,sans-serif;
-	font-size:    var policyLink = "https://blogs.it.ox.ac.uk/adamweblearn/";
- 1em;
+	font-size: 1em;
 	font-weight: 400;
 	margin: 0.5em 0.5em 0.5em 0;
 	padding: 0.8em 1.2em;
