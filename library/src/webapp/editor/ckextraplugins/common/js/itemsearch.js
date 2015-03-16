@@ -79,17 +79,17 @@ $.fn.itemSearch = function(options) {
     return html;
   };
 
-  var appendBackButton = function(nav, currentPage){
-      nav.append($('<a/>').html('<span class="pageSpan">« Back</span>').attr({'class': 'pageNum', 'href': '#', 'data-page': currentPage-1}));
+  var appendBackButton = function(nav, currentPage, iFrameId){
+      nav.append($('<a/>').html('<span class="pageSpan">« Back</span>').attr({'class': 'pageNum ' + iFrameId, 'href': '#', 'data-page': currentPage-1}));
   };
 
-  var appendPageButtons = function(i, currentPage, pagesContainer, nav){
+  var appendPageButtons = function(i, currentPage, pagesContainer, nav, iFrameId){
       if (i == currentPage){
-          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum currentPageNum', 'href': '#', 'data-page': i}));
+          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum currentPageNum ' + iFrameId, 'href': '#', 'data-page': i}));
           pagesContainer.append($('<div/>').attr({'class': 'page', 'data-page': i}));
       }
       else {
-          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum pageSpan', 'href': '#', 'data-page': i}));
+          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum pageSpan ' + iFrameId, 'href': '#', 'data-page': i}));
           pagesContainer.append($('<div/>').attr({'class': 'page', 'data-page': i}));
       }
   };
@@ -108,22 +108,23 @@ $.fn.itemSearch = function(options) {
     // build page numbers and containers
 
     var currentPage = $.fn.itemSearch.currentPage;
+    var iFrameId = settings.resultsContainer[0].id.replace('Results', 'Iframe');
     if (currentPage >= 1 && currentPage  <=4){
       if (currentPage  > 1){
-          appendBackButton(nav, currentPage );
+          appendBackButton(nav, currentPage, iFrameId );
       }
       for (i = 1; i <= 7; i++) {
-          appendPageButtons(i, currentPage , pagesContainer, nav);
+          appendPageButtons(i, currentPage , pagesContainer, nav, iFrameId);
       }
     }
     else {
         appendBackButton(nav, currentPage );
         for (i = currentPage-3; i <= currentPage +3; i++) {
-            appendPageButtons(i, currentPage , pagesContainer, nav);
+            appendPageButtons(i, currentPage , pagesContainer, nav, iFrameId);
         }
     }
 
-    nav.append($('<a/>').html('<span class="pageSpan">Next »</span>').attr({'class': 'pageNum', 'href': '#', 'data-page': currentPage +1}));
+    nav.append($('<a/>').html('<span class="pageSpan">Next »</span>').attr({'class': 'pageNum ' + iFrameId, 'href': '#', 'data-page': currentPage +1}));
     container.append(pagesContainer);
 
     // now move results into the correct containers
@@ -137,7 +138,8 @@ $.fn.itemSearch = function(options) {
       var page = $this.data('page');
 
       $.fn.itemSearch.currentPage = page;
-      var searchButtonLink = document.getElementById('youTubeSearchIframe').contentWindow.document.forms[0].children[1];
+      var searchResultsIFrameId = $.grep(this.classList, function(v) {return v.indexOf('Iframe')!=-1;});
+      var searchButtonLink = document.getElementById(searchResultsIFrameId).contentWindow.document.forms[0].children[1];
       searchButtonLink.click();
       return false;
     });
