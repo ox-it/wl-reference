@@ -53,11 +53,11 @@ var YouTubeSearchService = function(options) {
 
   var resetTokensIfNewSearchTerm = function(currentSearchTerm, searchTerm){
       if (currentSearchTerm != searchTerm){
-          YouTubeSearchService.pt.pageTokens = new Array();
-          YouTubeSearchService.pt.currentPage = 1;
-          YouTubeSearchService.pt.pageTokens[1] = '';
+          $.fn.itemSearch.pageTokens = new Array();
+          $.fn.itemSearch.currentPage = 1;
+          $.fn.itemSearch.pageTokens[1] = '';
       }
-      YouTubeSearchService.pt.currentSearchTerm = searchTerm;
+      $.fn.itemSearch.currentSearchTerm = searchTerm;
   };
 
   var setNextPageToken = function(url, searchTerm, pageTokens, i){
@@ -83,9 +83,9 @@ var YouTubeSearchService = function(options) {
       throw 'NoYouTubeApiKeySpecified';
     }
 
-    resetTokensIfNewSearchTerm(YouTubeSearchService.pt.currentSearchTerm, searchTerm);
-    var pageTokens = YouTubeSearchService.pt.pageTokens;
-    var currentPage = YouTubeSearchService.pt.currentPage;
+    resetTokensIfNewSearchTerm($.fn.itemSearch.currentSearchTerm, searchTerm);
+    var pageTokens = $.fn.itemSearch.pageTokens;
+    var currentPage = $.fn.itemSearch.currentPage;
     var results = [];
 
     $.ajax({

@@ -107,7 +107,7 @@ $.fn.itemSearch = function(options) {
 
     // build page numbers and containers
 
-    var currentPage = YouTubeSearchService.pt.currentPage;
+    var currentPage = $.fn.itemSearch.currentPage;
     if (currentPage >= 1 && currentPage  <=4){
       if (currentPage  > 1){
           appendBackButton(nav, currentPage );
@@ -136,7 +136,7 @@ $.fn.itemSearch = function(options) {
       var $this = $(this);
       var page = $this.data('page');
 
-      YouTubeSearchService.pt.currentPage = page;
+      $.fn.itemSearch.currentPage = page;
       var searchButtonLink = document.getElementById('youTubeSearchIframe').contentWindow.document.forms[0].children[1];
       searchButtonLink.click();
       return false;
@@ -148,7 +148,7 @@ $.fn.itemSearch = function(options) {
 
     // show the first page
     container.find('.page').hide();
-    container.find('.page[data-page="' + YouTubeSearchService.pt.currentPage + '"]').show();
+    container.find('.page[data-page="' + $.fn.itemSearch.currentPage + '"]').show();
 
     return $('<div/>').append(container).html();
   };
