@@ -80,16 +80,16 @@ $.fn.itemSearch = function(options) {
   };
 
   var appendBackButton = function(nav, currentPage, iFrameId){
-      nav.append($('<a/>').html('<span class="pageSpan">« Back</span>').attr({'class': 'pageNum ' + iFrameId, 'href': '#', 'data-page': currentPage-1}));
+      nav.append($('<a/>').html('<span class="pageSpan">« Back</span>').attr({'id' : iFrameId, 'class': 'pageNum', 'href': '#', 'data-page': currentPage-1}));
   };
 
   var appendPageButtons = function(i, currentPage, pagesContainer, nav, iFrameId){
       if (i == currentPage){
-          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum currentPageNum ' + iFrameId, 'href': '#', 'data-page': i}));
+          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'id' : iFrameId, 'class': 'pageNum currentPageNum', 'href': '#', 'data-page': i}));
           pagesContainer.append($('<div/>').attr({'class': 'page', 'data-page': i}));
       }
       else {
-          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'class': 'pageNum pageSpan ' + iFrameId, 'href': '#', 'data-page': i}));
+          nav.append($('<a/>').html('<span class="pageSpan">' + i + '</span>').attr({'id' : iFrameId, 'class': 'pageNum pageSpan', 'href': '#', 'data-page': i}));
           pagesContainer.append($('<div/>').attr({'class': 'page', 'data-page': i}));
       }
   };
@@ -118,7 +118,7 @@ $.fn.itemSearch = function(options) {
       }
     }
     else {
-        appendBackButton(nav, currentPage );
+        appendBackButton(nav, currentPage, iFrameId );
         for (i = currentPage-3; i <= currentPage +3; i++) {
             appendPageButtons(i, currentPage , pagesContainer, nav, iFrameId);
         }
@@ -133,14 +133,14 @@ $.fn.itemSearch = function(options) {
     }
 
     $(document).on('click', '.pageNum', function() {
-      // find closest results container
+      // click search button with current page
       var $this = $(this);
       var page = $this.data('page');
 
       $.fn.itemSearch.currentPage = page;
-      var searchResultsIFrameId = $.grep(this.classList, function(v) {return v.indexOf('Iframe')!=-1;});
-      var searchButtonLink = document.getElementById(searchResultsIFrameId).contentWindow.document.forms[0].children[1];
-      searchButtonLink.click();
+      var searchButton = $('#' + this.id).contents().find('a');
+      searchButton.click();
+      e.preventDefault();
       return false;
     });
 
