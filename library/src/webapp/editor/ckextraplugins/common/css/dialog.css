@@ -1,10 +1,10 @@
 /* search results paging styles */
-*[id$='SearchResults'] .pagination {
+.pagination {
 	overflow: hidden;
 	padding: 1px;
 }
 
-*[id$='SearchResults'] .pageNum  {
+.pageNum  {
 	float: left;
 	display: block;
 	border: 1px solid #d3d3d3;
@@ -15,13 +15,17 @@
 	text-decoration: none;
 }
 
-*[id$='SearchResults'] .currentPageNum {
+.currentPageNum {
 	background: none repeat scroll 0 0 #e9e9e9;
 }
 
-*[id$='SearchResults'] .pageSpan {
+.pageSpan {
 	font-weight: bold;
 	font-size: 11px;
 	color: #333;
 	cursor: pointer !important;
+}
+
+a:link {
+	text-decoration: none;
 }

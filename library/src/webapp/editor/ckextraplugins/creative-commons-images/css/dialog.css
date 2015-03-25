@@ -85,8 +85,7 @@
   white-space: normal !important;
 }
 
-#creativeCommonsImage
-SearchResults .pagination {
+#creativeCommonsImageSearchResults .pagination {
   overflow: hidden;
   padding: 1px;
 }

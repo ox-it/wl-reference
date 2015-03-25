@@ -124,7 +124,7 @@ $.fn.itemSearch = function(options) {
         }
     }
 
-    nav.append($('<a/>').html('<span class="pageSpan">Next »</span>').attr({'class': 'pageNum ' + iFrameId, 'href': '#', 'data-page': currentPage +1}));
+    nav.append($('<a/>').html('<span class="pageSpan">Next »</span>').attr({'id': iFrameId, 'class': 'pageNum ' + iFrameId, 'href': '#', 'data-page': currentPage +1}));
     container.append(pagesContainer);
 
     // now move results into the correct containers
@@ -132,7 +132,7 @@ $.fn.itemSearch = function(options) {
       container.find('.page[data-page="' + currentPage + '"]').append(results[i]);
     }
 
-    $(document).on('click', '.pageNum', function() {
+    $(document).off('click', '.pageNum').on('click', '.pageNum', function() {
       // click search button with current page
       var $this = $(this);
       var page = $this.data('page');
@@ -140,7 +140,6 @@ $.fn.itemSearch = function(options) {
       $.fn.itemSearch.currentPage = page;
       var searchButton = $('#' + this.id).contents().find('a');
       searchButton.click();
-      e.preventDefault();
       return false;
     });
 
