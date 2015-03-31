@@ -101,52 +101,6 @@ CKEDITOR.dialog.add('researcherTrainingToolDialog', function(editor) {
           },
           {
             type: 'hbox',
-            widths: ['50%', '50%'],
-            className: 'hide',
-              children: [
-              {
-                type: 'text',
-                id: 'starting-after',
-                label: 'Starting After',
-                className: 'cke_datepicker',
-                setup: function(element) {
-                  // parse date from the full string (everything prior to the T)
-                  var date = getCourseDate(element.getAttribute('data-startingAfter'));
-                  this.setValue(date);
-                },
-                commit: function(element) {
-                  var currentDate = new Date();
-                  var day = currentDate.getDate();
-                  if (day.toString().length==1) day = '0' + day;
-                  var month = currentDate.getMonth() + 1;
-                  if (month.toString().length==1) month = '0' + month;
-                  var year = currentDate.getFullYear();
-                  var date = year + "-" + month + "-" + day;
-                  element.setAttribute('data-startingAfter', date + 'T00:00:00');
-                }
-              },
-              {
-                type: 'text',
-                id: 'starting-before',
-                label: 'Starting Before',
-                className: 'cke_datepicker',
-                setup: function(element) {
-                  var date = getCourseDate(element.getAttribute('data-startingBefore'));
-                  this.setValue(date);
-                },
-                commit: function(element) {
-                  var date = this.getValue();
-
-                  if (date)
-                    element.setAttribute('data-startingBefore', date + 'T00:00:00');
-                  else if (!this.insertMode)
-                    element.removeAttribute('data-startingBefore');
-                }
-              }
-            ]
-          },
-          {
-            type: 'hbox',
             widths: ['40%', '40%', '20%'],
             children: [
               {
@@ -348,6 +302,15 @@ CKEDITOR.dialog.add('researcherTrainingToolDialog', function(editor) {
       var node = (!this.fakeImage)? new CKEDITOR.dom.element('div') : this.node;
       node.setAttribute('data-researcher-training-tool', 'true');
       node.setAttribute('class', 'courses-widget-container');
+
+      var currentDate = new Date();
+      var day = currentDate.getDate();
+      if (day.toString().length==1) day = '0' + day;
+      var month = currentDate.getMonth() + 1;
+      if (month.toString().length==1) month = '0' + month;
+      var year = currentDate.getFullYear();
+      var date = year + "-" + month + "-" + day;
+      node.setAttribute('data-startingAfter', date + 'T00:00:00');
 
       // commit the content to the node
       this.commitContent(node);
