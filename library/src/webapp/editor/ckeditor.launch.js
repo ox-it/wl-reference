@@ -78,17 +78,28 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     var country = sakai.locale && sakai.locale.userCountry || null;
 
     // WL-3501 plugins list
-    var wlckplugins = {
-        general: [
-            'youtube', 'twitter', 'vimeo', 'creative-commons-images'
-        ],
-        weblearn: [
-            'folder-listing', 'image-gallery'
-        ],
-        oxford: [
-            'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems'
-        ]
-    };
+    var showFullWlckplugins = sakai.editor.placementToolId==="sakai.resources";
+    var wlckplugins;
+    if (showFullWlckplugins) {
+        wlckplugins = {
+            general: [
+                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
+            ],
+            weblearn: [
+                'folder-listing', 'image-gallery'
+            ],
+            oxford: [
+                'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems'
+            ]
+        };
+    }
+    else {
+        wlckplugins = {
+            general: [
+                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
+            ]
+        };
+    }
 
     // block the plugins according to the blocked plugins json
     if (jsonSuccess) {
@@ -103,10 +114,15 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         }
       }
     } else {
-        // block all of them
-        wlckplugins.general = [];
-        wlckplugins.weblearn = [];
-        wlckplugins.oxford = [];
+        if (showFullWlckplugins) {
+            // block all of them
+            wlckplugins.general = [];
+            wlckplugins.weblearn = [];
+            wlckplugins.oxford = [];
+        }
+        else {
+            wlckplugins.general = [];
+        }
     }
 
     var ckconfig = {
@@ -166,8 +182,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             '/',
             // WL-3501 placement for toolbars
             wlckplugins!=null ? wlckplugins.general : '/',
-            wlckplugins!=null ? wlckplugins.weblearn : '/',
-            wlckplugins!=null ? wlckplugins.oxford : '/',
+            showFullWlckplugins ? (wlckplugins!=null ? wlckplugins.weblearn : '/') : '/',
+            showFullWlckplugins ? (wlckplugins!=null ? wlckplugins.oxford : '/') : '/',
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
