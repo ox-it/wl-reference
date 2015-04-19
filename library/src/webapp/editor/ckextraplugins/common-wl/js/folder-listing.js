@@ -32,7 +32,7 @@ $.fn.folderListing = function(options) {
 
     for (i in json[0]['resourceChildren']) {
       var file = json[0]['resourceChildren'][i];
-        if (i!='contains') {
+        if (i!='contains' && !file.hidden) {
 
       var li = $('<li/>');
       var a = $('<a/>').attr('href', '#');
