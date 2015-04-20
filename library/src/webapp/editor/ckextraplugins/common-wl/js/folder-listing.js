@@ -32,7 +32,7 @@ $.fn.folderListing = function(options) {
 
     for (i in json[0]['resourceChildren']) {
       var file = json[0]['resourceChildren'][i];
-        if (i!='contains' && !file.hidden) {
+        if (i!='contains') {
 
       var li = $('<li/>');
       var a = $('<a/>').attr('href', '#');
@@ -75,7 +75,11 @@ $.fn.folderListing = function(options) {
         a.attr('rel', file.url);
       } else {
         // folder
-        li.addClass('directory collapsed');
+        if (!file.hidden) {
+            li.addClass('directory collapsed');
+        } else {
+            li.addClass('directory collapsed inactive');
+        }
 
         // show the number of files
         if ($div.data('files')) {
