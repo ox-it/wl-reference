@@ -193,7 +193,7 @@ CKEDITOR.dialog.add('oxpointsDialog', function(editor) {
       // embed assets into the node
       embedAssetsInCKEditorNode({
         node: node,
-        js: [path + 'js/init-oxpoint-map.js', 'https://maps.google.com/maps/api/js?sensor=false&callback=initOxPointMap'],
+        js: [path + 'js/init-oxpoint-map.js', '//maps.google.com/maps/api/js?sensor=false&callback=initOxPointMap'],
         css: [path + 'css/oxpoints.css']
       });
 
