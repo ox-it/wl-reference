@@ -110,7 +110,7 @@ $.fn.itemSearch = function(options) {
     var currentPage = $.fn.itemSearch.currentPage;
     var iFrameId = settings.resultsContainer[0].id.replace('Results', 'Iframe');
     if (searchResults.instruction){
-        nav.append($('<p/>').html('<span class="">' + searchResults.instruction + '</span>'));
+        nav.append($('<p/>').html('<span>' + searchResults.instruction + '</span>'));
     }
     if (currentPage >= 1 && currentPage  <=4){
       if (currentPage  > 1){
