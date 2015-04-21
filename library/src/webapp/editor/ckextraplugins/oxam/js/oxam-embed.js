@@ -35,11 +35,9 @@ $.fn.oxamEmbed = function(options) {
         tmpParams = tmpParams.split('&');
     var params = {};
 
-    for (i in tmpParams) {
-      if (i!='contains'){
-          var param = tmpParams[i].split('=');
-          params[param[0]] = param[1];
-      }
+    for (var i = 0; i < tmpParams.length; i++) {
+        var param = tmpParams[i].split('=');
+        params[param[0]] = param[1];
     }
 
     return params;
