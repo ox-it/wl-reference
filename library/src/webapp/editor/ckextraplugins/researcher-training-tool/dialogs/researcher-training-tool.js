@@ -72,6 +72,10 @@ CKEDITOR.dialog.add('researcherTrainingToolDialog', function(editor) {
                   input.attr('data-name', input.val());
                 }
               });
+              if (!!navigator.userAgent.match(/Trident\/7\./)){  // http://stackoverflow.com/questions/18684099/jquery-fail-to-detect-ie-11
+                  input.val("Search name of a department/college etc...");
+                  input.one( "click", function() {$(this).val("");});
+              }
             },
             setup: function(element) {
               var uri = element.getAttribute('data-providedBy');
@@ -149,7 +153,7 @@ CKEDITOR.dialog.add('researcherTrainingToolDialog', function(editor) {
                 setup: function(element) {
                   var skills = element.getAttribute('data-skill');
                   if (skills)
-                    this.setValues(values.trim().split(' '));
+                    this.setValues(skills.trim().split(' '));
                 },
                 commit: function(element) {
                   var skills = this.getValues();

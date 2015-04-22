@@ -8,11 +8,16 @@ CKEDITOR.ui.dialog.uiElement.prototype.getValues = function() {
   // get the options from the dialog's input element
   var select = this.getInputElement();
   var selectedOptions = select.$.selectedOptions;
+  if (!!navigator.userAgent.match(/Trident\/7\./)){    // http://stackoverflow.com/questions/18684099/jquery-fail-to-detect-ie-11
+      selectedOptions = select.$.options.children;
+  }
   var values = [];
 
   // add values to array
   for (i = 0; i < selectedOptions.length; i++) {
-    values.push(selectedOptions[i].value);
+    if (selectedOptions[i].selected){
+        values.push(selectedOptions[i].value);
+    }
   }
 
   return values;
