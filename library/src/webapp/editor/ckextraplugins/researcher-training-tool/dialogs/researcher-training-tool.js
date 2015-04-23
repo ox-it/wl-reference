@@ -24,6 +24,7 @@ if (!$.fn.autocomplete) {
 
 CKEDITOR.scriptLoader.load(pathCommon + 'js/embed-assets-in-editor.js');
 CKEDITOR.scriptLoader.load(pathCommonWl + 'js/embed-jquery-assets-in-editor.js');
+CKEDITOR.scriptLoader.load(pathCommonWl + 'js/browser.js');
 CKEDITOR.scriptLoader.load(pathCommonWl + '/js/courses-js-widget/oxford-courses-widget.js');
 CKEDITOR.scriptLoader.load(pathCommonWl + 'js/oxpoints-autocomplete.js');
 CKEDITOR.scriptLoader.load(path + 'js/skills.js');
@@ -72,7 +73,7 @@ CKEDITOR.dialog.add('researcherTrainingToolDialog', function(editor) {
                   input.attr('data-name', input.val());
                 }
               });
-              if (!!navigator.userAgent.match(/Trident\/7\./)){  // http://stackoverflow.com/questions/18684099/jquery-fail-to-detect-ie-11
+              if (isIE()){
                   input.val("Search name of a department/college etc...");
                   input.one( "click", function() {$(this).val("");});
               }
