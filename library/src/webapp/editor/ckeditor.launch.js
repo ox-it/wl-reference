@@ -89,7 +89,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
                 'folder-listing', 'image-gallery'
             ],
             oxford: [
-                'oxam', 'solo-citation', 'researcher-training-tool', 'oxpoints', 'oxitems'
+                'oxam', 'researcher-training-tool', 'oxpoints', 'oxitems'
             ]
         };
     }
