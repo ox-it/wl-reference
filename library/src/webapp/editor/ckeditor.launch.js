@@ -103,12 +103,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
     // block the plugins according to the blocked plugins json
     if (jsonSuccess) {
-      for (i in jsonSuccess['ckeditor-config_collection']) {
+      for (var i = 0; i < jsonSuccess['ckeditor-config_collection'].length ; i++) {
         var plugin = jsonSuccess['ckeditor-config_collection'][i].data;
 
         // remove every plugin in the toolbar(s) that match(es) the current json element
-        for (toolbar in wlckplugins) {
-            wlckplugins[toolbar] = wlckplugins[toolbar].filter(function (toolbarPlugin) {
+        for (var y = 0; y < wlckplugins.length; y++) {
+            wlckplugins[y] = wlckplugins[y].filter(function (toolbarPlugin) {
                 return toolbarPlugin != plugin;
             });
         }
@@ -269,10 +269,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
             // WL-3501 load wl-ck-plugins
             // go through each toolbar...
-            for (toolbar in wlckplugins) {
-                var data = wlckplugins[toolbar];
+            for (var i = 0; i < wlckplugins.length; i++) {
+                var data = wlckplugins[i];
                 // ... then the remaining plugins in that toolbar ...
-                for (i in data) {
+                for (var j = 0; j < data.length; j++) {
                     plugin = data[i];
                     // ... and add the plugin
                     CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
