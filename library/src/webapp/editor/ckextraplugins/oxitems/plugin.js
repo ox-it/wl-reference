@@ -14,6 +14,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('oxitems', {
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'oxitems',
   init: function(editor) {
     editor.addCommand('oxitems', new CKEDITOR.dialogCommand('oxItemsDialog'));

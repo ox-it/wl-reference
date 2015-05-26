@@ -16,6 +16,7 @@ var isCorrectElementType = function(element) {
 
 CKEDITOR.plugins.add('folder-listing', {
   icons: 'folder-listing',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   init: function(editor) {
     editor.addCommand('folder-listing', new CKEDITOR.dialogCommand('folderListingDialog'));
     editor.ui.addButton('folder-listing', {

@@ -1,5 +1,5 @@
 CKEDITOR.plugins.add('youtube', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'youtube',
 
   init: function(editor) {

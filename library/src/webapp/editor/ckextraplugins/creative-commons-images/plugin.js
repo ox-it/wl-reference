@@ -1,5 +1,5 @@
 CKEDITOR.plugins.add( 'creative-commons-images', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'creative-commons-images',
 
   init: function(editor) {

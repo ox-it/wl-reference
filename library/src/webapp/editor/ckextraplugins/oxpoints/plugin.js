@@ -15,7 +15,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('oxpoints', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11',
   icons: 'oxpoints', // icon from http://simpleicon.com/map-marker-8.html
 
   init: function(editor) {

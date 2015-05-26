@@ -15,6 +15,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('solo-citation', {
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'solo-citation',
   init: function(editor) {
     editor.addCommand('solo-citation', new CKEDITOR.dialogCommand('soloCitationDialog'));

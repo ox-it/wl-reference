@@ -15,6 +15,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('image-gallery', {
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'image-gallery',
   init: function(editor) {
     editor.addCommand('image-gallery', new CKEDITOR.dialogCommand('imageGalleryDialog'));

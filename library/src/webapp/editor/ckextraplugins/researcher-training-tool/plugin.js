@@ -15,7 +15,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('researcher-training-tool', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'researcher-training-tool',
 
   init: function(editor) {

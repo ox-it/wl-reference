@@ -15,7 +15,7 @@ var isCorrectElementType = function(element) {
 };
 
 CKEDITOR.plugins.add('twitter', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'twitter',
 
   init: function(editor) {
