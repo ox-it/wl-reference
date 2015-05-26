@@ -1,5 +1,5 @@
 CKEDITOR.plugins.add('vimeo', {
-  requires: 'dialog,fakeobjects',
+  requires: 'dialog,fakeobjects,jquery-1.11.1',
   icons: 'vimeo',
 
   init: function(editor) {

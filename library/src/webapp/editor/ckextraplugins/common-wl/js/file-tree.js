@@ -194,4 +194,4 @@ $.fn.fileTree = function(options) {
     }
   });
 };
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

@@ -1,4 +1,5 @@
 var BindVimeoSearchToContainer = function(container, searchResults, result) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // initialization
   var init = function() {
     bindToContainer();

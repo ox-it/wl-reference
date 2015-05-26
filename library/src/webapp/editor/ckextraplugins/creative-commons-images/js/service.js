@@ -7,6 +7,7 @@
   */
 
 var CreativeCommonsImageSearchService = function(params) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + FlickrApiKey;
 
   // fills in default settings for search query parameters

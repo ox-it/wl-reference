@@ -86,11 +86,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
     // WL-3501 plugins list
     var showFullWlckplugins = sakai.editor.placementToolId==="sakai.resources";
-    var wlckplugins;
     if (showFullWlckplugins) {
         wlckplugins = {
             general: [
-                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
+                'youtube', 'twitter', 'vimeo', 'creative-commons-images', 'jquery-1.11.1'
             ],
             weblearn: [
                 'folder-listing', 'image-gallery'
@@ -103,7 +102,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     else {
         wlckplugins = {
             general: [
-                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
+                'youtube', 'twitter', 'vimeo', 'creative-commons-images', 'jquery-1.11.1'
             ]
         };
     }

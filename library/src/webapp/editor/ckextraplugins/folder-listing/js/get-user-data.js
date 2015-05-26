@@ -1,5 +1,6 @@
 // methods for getting the user data
 var getCurrentUserData = function() {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var data = {};
 
   $.ajax({
@@ -15,6 +16,7 @@ var getCurrentUserData = function() {
 };
 
 var getAvailableSites = function() {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var sites = [['Select a site', '']];
 
   // my workspace

@@ -139,4 +139,4 @@ $.fn.wlImageGallery = function(options) {
 $(document).ready(function() {
   $('[data-image-gallery]').wlImageGallery();
 });
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

@@ -2,6 +2,7 @@ var oxamUrl = '/portal/hierarchytool/8a98905b-a664-4618-9200-4ceb2118b0d6/advanc
 
 // load the select fields from oxam
 var getOxamData = function($div) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   $div.hide();
 
   $.ajax({
@@ -20,10 +21,12 @@ var getOxamDescription = function($div) {
 };
 
 var getOxamExamListing = function($select) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   $select.html($('.oxamdata #exam').html());
 };
 
 var getOxamExamYears = function($select) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   $select.html($('.oxamdata #year').html());
 
   // fix option values (from Weblearn they aren't actually the years)
@@ -38,6 +41,7 @@ var getOxamExamYears = function($select) {
 };
 
 var bindOxamPreviewToTab = function(dialog, $previewButton) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   $previewButton.on('click', function() {
     var query = dialog.getValueOf('tab-search', 'query');
     var exam = dialog.getValueOf('tab-search', 'exam');

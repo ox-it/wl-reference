@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get absolute plugin path
 var h = CKEDITOR.plugins.get('youtube');
 var path = h.path;
@@ -120,4 +120,4 @@ CKEDITOR.dialog.add('youtubeDialog', function(editor) {
     }
   };
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

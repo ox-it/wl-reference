@@ -213,4 +213,4 @@ $.fn.itemSearch = function(options) {
     $(this).prepend($form);
   });
 };
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

@@ -40,4 +40,4 @@ $.fn.twitterTimeline = function() {
 $(document).ready(function() {
   $('[data-twitter-timeline]').twitterTimeline();
 });
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

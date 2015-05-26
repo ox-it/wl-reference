@@ -1,5 +1,6 @@
 // embed extra ckeditor assets
 var embedExtraCkeditorAssets = function(editor, jQueryPath, preloaderPath) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var data = editor.getData();
   var $data = $('<div>').append($(data));
   var jQ = jQueryPath ? jQueryPath : 'https://code.jquery.com/jquery-1.11.1.js';
@@ -24,6 +25,7 @@ var embedExtraCkeditorAssets = function(editor, jQueryPath, preloaderPath) {
 
 // embed the assets into the node
 embedAssetsInNode = function(node, assets) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var outputHtml = $('<div></div>');
 
   // set defaults

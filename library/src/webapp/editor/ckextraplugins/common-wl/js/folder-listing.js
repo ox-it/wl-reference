@@ -156,4 +156,4 @@ $.fn.folderListing = function(options) {
 $(document).ready(function() {
   $('[data-folder-listing]').folderListing();
 });
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

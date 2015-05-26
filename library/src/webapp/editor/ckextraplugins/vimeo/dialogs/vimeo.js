@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get absolute plugin path
 var h = CKEDITOR.plugins.get('vimeo');
 var path = h.path;
@@ -120,5 +120,5 @@ CKEDITOR.dialog.add('vimeoDialog', function(editor) {
     }
   };
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());
 

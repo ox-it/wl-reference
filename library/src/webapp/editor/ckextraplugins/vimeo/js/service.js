@@ -13,6 +13,7 @@
   */
 
 var VimeoSearchService = function(options) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // ensure options is defined
   if (!options) {
     var options = {};

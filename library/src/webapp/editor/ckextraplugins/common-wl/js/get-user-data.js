@@ -1,5 +1,6 @@
 // methods for getting the current site data
 var getAvailableSites = function() {
+    var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
     var sites = [];
     var groupPath = '/group/';
     var forwardSlash = '/';

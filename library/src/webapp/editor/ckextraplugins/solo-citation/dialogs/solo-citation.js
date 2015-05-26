@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get plugin paths
 var h = CKEDITOR.plugins.get('solo-citation');
 var path = h.path;
@@ -124,4 +124,4 @@ CKEDITOR.dialog.add('soloCitationDialog', function(editor) {
     }
   }
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

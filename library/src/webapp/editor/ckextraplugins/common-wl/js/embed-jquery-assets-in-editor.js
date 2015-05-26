@@ -1,5 +1,6 @@
 // embed jquery and asset preloader into the editor
 var embedjQueryAssetsInEditor = function(editor, pathCommon) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var jQueryPath = 'https://weblearn.ox.ac.uk/library/js/jquery/jquery-1.9.1.min.js';
   var preloaderPath = pathCommon + 'js/preload-ckeditor-assets.js';
   var data = editor.getData();
@@ -31,7 +32,8 @@ var embedjQueryAssetsInEditor = function(editor, pathCommon) {
 };
 
 // embed assets into a ckeditor node (div)
-var embedAssetsInCKEditorNode = function(params) {
+var embedAssetsInCKEditorNode = (function ($) { return function(params) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // params presets
   params = $.extend({
     js: [], css: []

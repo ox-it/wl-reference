@@ -1,4 +1,5 @@
 var getPluginDialogHtml = function(pluginPath, htmlFile) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var div = $('<div/>');
   var url = pluginPath + 'html/' + htmlFile;
 
@@ -13,4 +14,3 @@ var getPluginDialogHtml = function(pluginPath, htmlFile) {
 
   return div.html();
 };
-

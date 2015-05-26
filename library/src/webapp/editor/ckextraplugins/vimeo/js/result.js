@@ -1,4 +1,5 @@
 var VimeoSearchResult = function(path) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var resultTemplate = $('<div/>').load(path + 'html/result.html');
 
   this.display = function(result) {

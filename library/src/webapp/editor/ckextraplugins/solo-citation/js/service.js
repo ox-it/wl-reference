@@ -7,6 +7,7 @@
   */
 
 var SOLOSearchService = function(params) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var url = 'https://api.m.ox.ac.uk/library/search';
 
   // fills in default settings for search query parameters

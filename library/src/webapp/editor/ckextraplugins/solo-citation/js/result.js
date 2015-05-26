@@ -1,5 +1,6 @@
 // object for handling the html display of search results
 var SOLOSearchResult = function(path) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var resultTemplate = $('<div/>').load(path + 'html/result.html');
 
   this.display = function(result) {

@@ -518,4 +518,4 @@ jQuery.each( ajaxEvents.split("|"),
 );
 
 
-})( jQuery, window );
+})( CKEDITOR.plugins.get('jquery-1.11.1').get(), window );

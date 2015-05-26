@@ -1,4 +1,5 @@
 var embedVimeoIframe = function(node) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var iframe = $('<iframe width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
   var src = node.getAttribute('data-src');
 

@@ -1,4 +1,5 @@
 var getTwitterDialogHtml = function(filename) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var div = $('<div/>');
 
   $.ajax({

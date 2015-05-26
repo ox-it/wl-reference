@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get plugin path
 var h = CKEDITOR.plugins.get('creative-commons-images');
 var path = h.path;
@@ -146,4 +146,4 @@ CKEDITOR.dialog.add('creativeCommonsImagesDialog', function(editor) {
     }
   };
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

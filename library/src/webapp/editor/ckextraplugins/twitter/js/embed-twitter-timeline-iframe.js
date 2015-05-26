@@ -1,4 +1,5 @@
 var embedTwitterTimelineIframe = function(node) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // load iframe properties
   var properties = {};
   properties.hashtag = node.getAttribute('data-hashtag');

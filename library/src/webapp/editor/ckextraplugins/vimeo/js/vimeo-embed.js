@@ -101,4 +101,4 @@
   $(document).ready(function() {
     $('[data-vimeo-embed]').vimeoEmbed();
   });
-}(jQuery));
+}(CKEDITOR.plugins.get('jquery-1.11.1').get()));

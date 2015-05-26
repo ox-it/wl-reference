@@ -1,4 +1,5 @@
 var BindResearcherTrainingPreviewToDialog = function($dialog, dialog, previewAttributes) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // make clicking the tab trigger the preview
   $dialog.on('click', "[id*='cke_preview_']", function() {
 

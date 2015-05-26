@@ -1,4 +1,5 @@
 var BindSoloSearchToDialog = function(path) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var container = $('#soloSearchForm');
   var searchResults = $('#soloSearchResults');
   var result = new SOLOSearchResult(path);

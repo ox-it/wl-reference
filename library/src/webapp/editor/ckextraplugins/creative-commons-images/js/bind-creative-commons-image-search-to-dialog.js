@@ -1,4 +1,5 @@
 var BindCreativeCommonsImageSearchToDialog = function(path, dialog) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var container = $('#creativeCommonsImageSearchForm');
   var searchResults = $('#creativeCommonsImageSearchResults');
   var result = new CreativeCommonsImageSearchResult(path);

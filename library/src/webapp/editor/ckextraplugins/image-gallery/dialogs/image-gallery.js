@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get plugin paths
 var h = CKEDITOR.plugins.get('image-gallery');
 var path = h.path;
@@ -212,4 +212,4 @@ CKEDITOR.dialog.add('imageGalleryDialog', function(editor) {
     }
   }
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

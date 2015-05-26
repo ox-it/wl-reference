@@ -39,4 +39,4 @@
     loadScripts(head, scripts);
     loadStyleSheets(head, stylesheets);
   });
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

@@ -1,4 +1,5 @@
 var getCreativeCommonsImagesDialogHtml = function(path, template) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var div = $('<div/>');
 
   if (!path) {

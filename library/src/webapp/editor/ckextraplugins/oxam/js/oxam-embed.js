@@ -192,4 +192,4 @@ $.fn.oxamEmbed = function(options) {
 $(document).ready(function() {
   $('[data-oxam-embed]').oxamEmbed();
 });
-})(jQuery);
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

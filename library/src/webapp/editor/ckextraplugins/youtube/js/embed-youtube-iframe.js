@@ -1,4 +1,5 @@
 var embedYouTubeIframe = function(node) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var iframe = $('<iframe width="640" height="360" frameborder="0" allowfullscreen></iframe>');
   var src = node.getAttribute('data-src');
 
