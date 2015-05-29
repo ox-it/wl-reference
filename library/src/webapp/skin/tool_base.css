@@ -186,6 +186,10 @@ table.listHier .attach{
 	width: .5em;
 }
 
+table.listHier .header{
+	color: #002147;
+}
+
 /*make the currently sorted column header text bold,apply to <th> tag*/
 /*see gradebook roster*/
 .currentSort{
