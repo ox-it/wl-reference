@@ -77,52 +77,11 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     var language = sakai.locale && sakai.locale.userLanguage || '';
     var country = sakai.locale && sakai.locale.userCountry || null;
 
-    // WL-3501 plugins list
-    var showFullWlckplugins = sakai.editor.placementToolId==="sakai.resources";
-    var wlckplugins;
-    if (showFullWlckplugins) {
-        wlckplugins = {
-            general: [
-                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
-            ],
-            weblearn: [
-                'folder-listing', 'image-gallery'
-            ],
-            oxford: [
-                'oxam', 'researcher-training-tool', 'oxpoints', 'oxitems'
-            ]
-        };
-    }
-    else {
-        wlckplugins = {
-            general: [
-                'youtube', 'twitter', 'vimeo', 'creative-commons-images'
-            ]
-        };
-    }
-
     // block the plugins according to the blocked plugins json
     if (jsonSuccess) {
-      for (var i = 0; i < jsonSuccess['ckeditor-config_collection'].length ; i++) {
+      for (i in jsonSuccess['ckeditor-config_collection']) {
         var plugin = jsonSuccess['ckeditor-config_collection'][i].data;
-
-        // remove every plugin in the toolbar(s) that match(es) the current json element
-        for (var y = 0; y < wlckplugins.length; y++) {
-            wlckplugins[y] = wlckplugins[y].filter(function (toolbarPlugin) {
-                return toolbarPlugin != plugin;
-            });
-        }
       }
-    } else {
-        if (showFullWlckplugins) {
-            // block all of them
-            wlckplugins.general = [];
-            wlckplugins.weblearn = [];
-            wlckplugins.oxford = [];
-        }
-        else {
-            wlckplugins.general = [];
-        }
     }
 
     var ckconfig = {
@@ -179,11 +138,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             (sakai.editor.enableResourceSearch
                 ? ['AudioRecorder','ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']
                 : ['AudioRecorder','Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']),
-            '/',
-            // WL-3501 placement for toolbars
-            wlckplugins!=null ? wlckplugins.general : '/',
-            showFullWlckplugins ? (wlckplugins!=null ? wlckplugins.weblearn : '/') : '/',
-            showFullWlckplugins ? (wlckplugins!=null ? wlckplugins.oxford : '/') : '/',
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
@@ -267,19 +221,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
 
-            // WL-3501 load wl-ck-plugins
-            // go through each toolbar...
-            for (var i = 0; i < wlckplugins.length; i++) {
-                var data = wlckplugins[i];
-                // ... then the remaining plugins in that toolbar ...
-                for (var j = 0; j < data.length; j++) {
-                    plugin = data[i];
-                    // ... and add the plugin
-                    CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
-                    ckconfig.extraPlugins += ',' + plugin;
-                }
-            }
     })();
+
 
 	  CKEDITOR.replace(targetId, ckconfig);
       //SAK-22505
