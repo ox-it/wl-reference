@@ -44,15 +44,22 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
   // function for getting json
   // credit to Mathias Bynens (https://mathiasbynens.be/notes/xhr-responsetype-json)
   var getJSON = function(url, successHandler, errorHandler, completeHandler) {
-    var xhr = new XMLHttpRequest();
+    var xhr = typeof XMLHttpRequest != 'undefined'
+      ? new XMLHttpRequest()
+      : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open('get', url, true);
-    xhr.responseType = 'json';
-    xhr.onload = function() {
-      var status = xhr.status;
-      if (status == 200) {
-        successHandler && successHandler(xhr.response);
-      } else {
-        errorHandler && errorHandler(status);
+    xhr.onreadystatechange = function() {
+      var status;
+      var data;
+      // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
+      if (xhr.readyState == 4) { // `DONE`
+        status = xhr.status;
+        if (status == 200) {
+          data = JSON.parse(xhr.responseText);
+          successHandler && successHandler(data);
+        } else {
+          errorHandler && errorHandler(status);
+        }
       }
     };
     xhr.send();
