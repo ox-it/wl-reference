@@ -275,11 +275,11 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
             // WL-3501 load wl-ck-plugins
             // go through each toolbar...
-            for (var i = 0; i < wlckplugins.length; i++) {
+            for (var i in wlckplugins) {
                 var data = wlckplugins[i];
                 // ... then the remaining plugins in that toolbar ...
                 for (var j = 0; j < data.length; j++) {
-                    plugin = data[i];
+                    plugin = data[j];
                     // ... and add the plugin
                     CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js');
                     ckconfig.extraPlugins += ',' + plugin;
