@@ -32,7 +32,7 @@ var embedjQueryAssetsInEditor = function(editor, pathCommon) {
 };
 
 // embed assets into a ckeditor node (div)
-var embedAssetsInCKEditorNode = (function ($) { return function(params) {
+var embedAssetsInCKEditorNode = function(params) {
   var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // params presets
   params = $.extend({
