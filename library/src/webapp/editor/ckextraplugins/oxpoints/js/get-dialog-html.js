@@ -1,4 +1,5 @@
 var getOxPointsDialogHtml = function(path, file) {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var div = $('<div/>');
   var url = path + 'html/' + file;
 

@@ -89,4 +89,4 @@ $.fn.oxPointMap = function(options) {
 $(document).ready(function() {
   $('[data-oxpoint]').oxPointMap();
 });
-}(jQuery));
+}(CKEDITOR.plugins.get('jquery-1.11.1').get()));

@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 // get plugin path
 var h = CKEDITOR.plugins.get('oxpoints');
 var path = h.path;
@@ -212,4 +212,4 @@ CKEDITOR.dialog.add('oxpointsDialog', function(editor) {
     }
   }
 });
-})();
+})(CKEDITOR.plugins.get('jquery-1.11.1').get());

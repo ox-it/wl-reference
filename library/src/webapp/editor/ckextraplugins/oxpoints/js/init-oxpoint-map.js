@@ -1,4 +1,5 @@
 var initOxPointMapPath = (function(){
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   // find current scripts
   var path = '';
 
@@ -16,6 +17,7 @@ var initOxPointMapPath = (function(){
 })();
 
 function initOxPointMap() {
+  var $ = CKEDITOR.plugins.get('jquery-1.11.1').get();
   var path = '/library/editor/ckextraplugins/oxpoints/js/';
   var gomap = path + 'gomap.js';
   var oxpoints = path + 'oxpoint-map.js';
