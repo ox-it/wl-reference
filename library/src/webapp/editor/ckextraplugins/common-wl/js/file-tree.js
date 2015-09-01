@@ -74,6 +74,7 @@ $.fn.fileTree = function(options) {
       dataType: settings.ajaxDataType,
       type: settings.ajaxType,
       data: settings.ajaxData(dir),
+      cache:false,
       success: function(json) {
         var data = settings.formatResults(json);
 
