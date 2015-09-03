@@ -89,6 +89,7 @@ $.fn.folderListing = function(options) {
           $.ajax({
             url: urlPrefix + url + '.json',
             dataType: 'json',
+            cache: false,
             success: function(data) {
               var span = $div.find('[rel="' + data['content_collection'][0]['resourceId'] + '"] .files');
               var files = data['content_collection'][0]['resourceChildren'].length;
