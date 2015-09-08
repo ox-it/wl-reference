@@ -17,6 +17,7 @@ $.fn.folderListing = function(options) {
   // Default settings
   var settings = $.extend({
     openToFolder: false,
+    enableHighlight: true,
     onFolderEvent: function(folder) {},
     onFileEvent: function(file) {
       window.open(file);
@@ -130,7 +131,7 @@ $.fn.folderListing = function(options) {
       // general display settings
       root: $div.data('directory'),
       openToFolder: settings.openToFolder,
-
+      enableHighlight: settings.enableHighlight,
       // configuring the ajax call
       ajaxUrl: function(dir) {
         return urlPrefix + dir + '.json';
@@ -153,8 +154,4 @@ $.fn.folderListing = function(options) {
   });
 };
 
-// automatically bind to data-folder-listing divs
-$(document).ready(function() {
-  $('[data-folder-listing]').folderListing();
-});
 })(jQuery);
