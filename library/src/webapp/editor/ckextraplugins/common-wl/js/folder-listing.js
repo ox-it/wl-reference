@@ -18,6 +18,7 @@ $.fn.folderListing = function(options) {
   var settings = $.extend({
     openToFolder: false,
     enableHighlight: true,
+    displayRootDirectory: false,
     onFolderEvent: function(folder) {},
     onFileEvent: function(file) {
       window.open(file);
@@ -28,9 +29,24 @@ $.fn.folderListing = function(options) {
 
   var urlPrefix = '/direct/content/resources/';
 
-  var getHtmlResults = function(json, $div) {
+  var getHtmlResults = function(json, $div, root) {
     var html = $('<ul/>').addClass('jqueryFileTree').hide();
-
+    var urlRoot = json[0].resourceId.trim();
+    var container = html;
+    //If we've already added the root folder?.
+    var rootFolderCheck = $div.children().length === 0;
+    if(settings.displayRootDirectory && urlRoot === root && rootFolderCheck){
+        var liRoot = $('<li/>');
+        var aRoot = $('<a/>').attr('href', '#');
+        aRoot.attr('rel', urlRoot);
+        aRoot.html($('<span/>').addClass('name').html(json[0].name));
+        liRoot.addClass('directory expanded');
+        liRoot.append(aRoot);
+        var ul = $('<ul/>').addClass('jqueryFileTree').hide();
+        liRoot.append(ul);
+        html.append(liRoot);
+        container = ul;
+    }
     for (i in json[0]['resourceChildren']) {
       var file = json[0]['resourceChildren'][i];
         if (i!='contains') {
@@ -100,9 +116,8 @@ $.fn.folderListing = function(options) {
           });
         }
       }
-
       li.append(a);
-      html.append(li);
+      container.append(li);
     }}
 
     $div
@@ -142,7 +157,7 @@ $.fn.folderListing = function(options) {
         return {};
       },
       formatResults: function(data) {
-        return getHtmlResults(data['content_collection'], $div);
+        return getHtmlResults(data['content_collection'], $div, $div.data('directory'));
       },
 
       // events and callbacks
