@@ -97,7 +97,8 @@ body.portalBody {
 #innercontent {
     margin-bottom: 10px;
     float: left;
-    width:100%
+    width:100%;
+    max-width:960px;
 }
 #col1of2 .portletTitleWrap, #col2of2 .portletTitleWrap {
     width: 98.5%;
