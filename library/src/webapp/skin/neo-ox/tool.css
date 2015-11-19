@@ -1023,6 +1023,10 @@ tr.selectedFound td {
     border-radius: 4px;
     padding: 8px;
 }
+.oulogin{
+    border: 1px solid #888;
+    background: #fff;
+}
 .login td.form table {
     width: 100%;
 }
