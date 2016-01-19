@@ -271,8 +271,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			 //ckconfig.atd_rpc='//localhost/proxy/spellcheck';
 			 //ckconfig.extraPlugins+="atd-ckeditor,";
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
+			 /*added plugin confighelper for placeholder property
+			 more info on http://alfonsoml.blogspot.co.uk/2012/02/configuration-helper-for-ckeditor.html */
 
-			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
+			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula,confighelper";
+			 //Add default text for placeholder
+			 ckconfig.placeholder = 'We recommend that you base your input on one of the predefined templates.To browse the available templates, you should click on the following icon in the editor\'s toolbar (above):';
 
             // WL-3501 load wl-ck-plugins
             // go through each toolbar...
